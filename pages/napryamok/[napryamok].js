@@ -2,22 +2,23 @@ import Layout, { siteTitle } from '../../components/layout'
 import { getAllDirectionIds, getDirectionData } from '../../lib/directions'
 import { getAllCollegesData, getSortedCollegesDataByDirections } from '../../lib/colleges'
 
-export default function Napryamok({ directionData: { direction }, colleges, getAllCollegesDirections }) {
-  const { category_id, category_description, category_name, categories } = direction[0]
-  console.log('collges', getAllCollegesDirections)
+export default function Napryamok(props) {
+  /* const { category_id, category_description, category_name, categories } = direction[0] */
+  console.log('collges', props)
   return (
     <Layout>
-      <div>{category_name}</div>
-      <div>{category_description}</div>
-      <ul>
-        {
-          categories.map(v => <li key={v.name}>{v.name}</li>)
-        }
-      </ul>
+      <div>ui a</div>
     </Layout>
   )
 }
-
+/* <div>{category_name}</div>
+ * <div>{category_description}</div> */
+/* <ul>
+ * {
+ *   categories.map(v => <li key={v.name}>{v.name}</li>)
+ * }
+ * </ul>
+ *  */
 export async function getStaticPaths() {
   const paths = getAllDirectionIds()
   return {
@@ -27,6 +28,7 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps({ params }) {
   const allCollegesDirections = getSortedCollegesDataByDirections()
+  console.log('allCollegesDirections', allCollegesDirections)
   const colleges = getAllCollegesData()
   const directionData = getDirectionData(params.napryamok)
   return {
