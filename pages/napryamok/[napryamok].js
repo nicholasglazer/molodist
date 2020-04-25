@@ -27,10 +27,9 @@ export async function getStaticPaths() {
   }
 }
 export async function getStaticProps({ params }) {
-  const allCollegesDirections = getSortedCollegesDataByDirections()
-  console.log('allCollegesDirections', allCollegesDirections)
-  const colleges = getAllCollegesData()
   const directionData = getDirectionData(params.napryamok)
+  const allCollegesDirections = getSortedCollegesDataByDirections(directionData.directionId)
+  const colleges = getAllCollegesData()
   return {
     props: {
       directionData,
