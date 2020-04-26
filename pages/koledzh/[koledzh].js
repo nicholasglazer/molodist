@@ -1,10 +1,8 @@
 import Layout, { siteTitle } from '../../components/layout'
 import { getAllCollegeIds, getCollegeData } from '../../lib/colleges'
-
 import s from '@emotion/styled'
 
-export default function Koledzh({ collegeData: {college} }) {
-  console.log(college)
+export default function Koledzh({ collegeData: {data} }) {
   const { koatuu_name,
           education_type_name,
           profession_educators,
@@ -15,7 +13,7 @@ export default function Koledzh({ collegeData: {college} }) {
           university_short_name,
           university_phone,
           university_director_fio
-  } = college[0]
+  } = data
 
   return (
     <Layout>
@@ -33,16 +31,7 @@ export default function Koledzh({ collegeData: {college} }) {
 const Title = s.div`
 font-size: ${props => props.isTrue ? '30px' : '5px'};
 `
-/* ${props} */
 
-/* <div>{category_name}</div>
- * <div>{category_description}</div>
- * <ul>
- * {
- *   categories.map(v => <li>{v.name}</li>)
- * }
- * </ul>
- *  */
 export async function getStaticPaths() {
   const paths = getAllCollegeIds()
   return {

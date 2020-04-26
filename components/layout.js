@@ -1,14 +1,25 @@
 import Head from 'next/head'
-import styles from './layout.module.css'
-import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
+import Router from 'next/router'
+import s from '@emotion/styled'
 
-const name = '[Your Name]'
-export const siteTitle = 'Next.js Sample Website'
+
+import { useContext } from 'react'
+import Theme from '../theme/theme'
+import ThemeContext from '../theme/ThemeContext'
+
+import utilStyles from '../styles/utils.module.css'
+
+const name = 'Молодiсть'
+const goBack = () => Router.back()
+
+export const siteTitle = 'Молодiсть - все про навчання'
 
 export default function Layout({ children, home }) {
+  const theme = useContext(ThemeContext)
+  const currentTheme = Theme[theme]
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -24,38 +35,41 @@ export default function Layout({ children, home }) {
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <header className={styles.header}>
+      <header>
         {home ? (
           <>
             <img
               src="/images/profile.jpg"
-              className={`${styles.headerHomeImage} ${utilStyles.borderCircle}`}
               alt={name}
             />
-            <h1 className={utilStyles.heading2Xl}>{name}</h1>
+            <h1 >{name}</h1>
           </>
         ) : (
           <>
+            <a onClick={goBack}>Назад</a>
             <Link href="/">
               <a>
                 <img
                   src="/images/profile.jpg"
-                  className={`${styles.headerImage} ${utilStyles.borderCircle}`}
                   alt={name}
                 />
               </a>
             </Link>
-            <h2 className={utilStyles.headingLg}>
+            <h2>
               <Link href="/">
-                <a className={utilStyles.colorInherit}>{name}</a>
+                <a>{name}</a>
               </Link>
             </h2>
           </>
         )}
       </header>
-      <main>{children}</main>
+      <main style = {{
+        padding: "1rem",
+        backgroundColor: `${currentTheme.backgroundColor}`,
+        color: `${currentTheme.textColor}`,
+      }}>{children}</main>
       {!home && (
-        <div className={styles.backToHome}>
+        <div >
           <Link href="/napryamky_navchannya">
             <a>← Back to home</a>
           </Link>
@@ -64,3 +78,30 @@ export default function Layout({ children, home }) {
     </div>
   )
 }
+const Wrapper = s.div`
+.container {
+  max-width: 36rem;
+  padding: 0 .5rem;
+  margin: 3rem auto 6rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.headerImage {
+  width: 1rem;
+  height: 1rem;
+}
+
+.headerHomeImage {
+  width: 2rem;
+  height: 2rem;
+}
+
+.backToHome {
+  margin: 3rem 0 0;
+}
+`
