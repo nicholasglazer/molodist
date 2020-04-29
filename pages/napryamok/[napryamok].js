@@ -1,49 +1,74 @@
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Layout, { siteTitle } from '../../components/layout'
 import { getAllDirectionIds, getDirectionData, getSortedDataByDirections } from '../../lib/directions'
 import s from '@emotion/styled'
+import {css} from '@emotion/core'
+import { Icon, Grid } from 'antd-mobile'
+import Router from 'next/router'
 
+//<AuditOutlined />
+// TODO cache filter results
 export default function Napryamok({ sortedDirection, directionData }) {
-  const { licenses } = sortedDirection.data
-  const { categories } = directionData.data
-  console.log(sortedDirection, directionData)
-  return (
-    <Layout>
-      <Link href="/filter"><a>Фільтри</a></Link>
-      {
-        categories.map(v => <div key={v.name}>{v.name}</div>)
-      }
-      <LicenseWrapper>
-        {
-          licenses ? licenses.map((v,i) => {
-            return (
-              <License key={i}>
-                {
-                  v.type === 'college'
-                  ? (<Link href="/koledzh/[koledzh]" as={`/koledzh/${v.university_edrpou}`}>
-                    <a>Universitet</a>
-                  </Link>)
-                  : (<Link href="/universitet/[universitet]" as={`/universitet/${v.university_edrpou}`}>
-                    <a>Universitet</a>
-                  </Link>)
-                }
-                <div>
-                  {v.qualification_group_name}
-                </div>
-                <div>
-                  {v.speciality_name}
-                </div>
-                <div>
+  const { categories } = sortedDirection.data
+  //const { categories } = directionData.data
+            //<Grid data={v.licenses} isCarousel onClick={() => {}} />
+  // <img src={dataItem.icon} style={{ width: '75px', height: '75px' }} alt="" />
+  // TODO v.type and other filters
+  const [filterState, setFilterState] = useState([]);
 
-                </div>
-              </License>
-            )
-          }) : null
-        }
-      </LicenseWrapper>
+  useEffect(() => setFilterState(JSON.parse(window.localStorage.getItem('filtersState')) || []), []);
+
+const hotpink = {
+  color: '#333',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between'
+}
+
+  return (
+    <Layout filter>
+      {
+        categories.map(v => {
+          const licensesFilter = v.licenses
+                                 .filter(x => filterState.collCheck && x.type === 'college' || filterState.uniCheck && x.type === 'university')
+                                 .filter(x => filterState.qualificationState.some(k => k.checked && k.label === x.qualification_group_name))
+                                 .filter(x => filterState.propertyTypeState.some(k => k.checked && k.label === x.university_financing_type_name))
+                                 .filter(x => filterState.regionState[0] !== 'Всі регіони' ? filterState.regionState[0] === x.region_name : true)
+          return(
+          <div key={v.name}>
+            <SpecialityTitle className="sub-title">{v.name}</SpecialityTitle>
+            <div>{licensesFilter.length}</div>
+            <Grid data={licensesFilter}
+                  isCarousel
+                  columnNum={4}
+                  itemStyle={hotpink}
+                  carouselMaxRow={1}
+                  renderItem={dataItem => (
+             <GridCellWrapper onClick={() => {Router.push('/universitet/[universitet]', `/universitet/${dataItem.university_edrpou}`)}}>
+               <span>{dataItem.university_short_name}</span>
+               <span>{dataItem.qualification_group_name}</span>
+               <Icon type="check" size={'md'} color='#353535' />
+             </GridCellWrapper>
+                  )}
+            />
+
+          </div>
+        )}
+                      )
+      }
     </Layout>
   )
 }
+
+const GridCellWrapper = s.div`
+padding: 4px;
+display: flex;
+height: 100%;
+flex-direction: column;
+justify-content: space-between;
+flex: 1;
+`
 
 const LicenseWrapper = s.div`
 display: flex;
@@ -53,13 +78,8 @@ align-items: center;
 word-wrap: wrap;
 `
 
-const License = s.div`
-flex: 1;
+const SpecialityTitle = s.div`
 padding: 4px;
-min-width: 150px;
-min-height: 300px;
-margin-right: 4px;
-margin-bottom: 4px;
 border: 1px solid #ccc;
 font-size: 15px;
 `

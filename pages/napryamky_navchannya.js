@@ -1,26 +1,34 @@
+import React from 'react'
 import Layout, { siteTitle } from '../components/layout'
-import Head from 'next/head'
 import Link from 'next/link'
+import Router from 'next/router'
 import { getSortedDirectionsData } from '../lib/directions'
+import { List, Icon } from 'antd-mobile'
 
-export default function Home({ allDirectionsData }) {
-  // console.log('alldir', allDirectionsData)
+const Item = List.Item;
+const Brief = Item.Brief;
+
+export default function Napryamky({ allDirectionsData }) {
+  console.log('alldir', allDirectionsData)
+        //<title>{siteTitle}</title>
   return (
-    <Layout home>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
-      <div>
+    <Layout filter>
+      <List renderHeader={() => 'Оберiть напрямок:'}>
         {
           allDirectionsData.map(v => {
             return (
-              <div key={v.category_id}>
-                <Link href="/napryamok/[napryamok]" as={`/napryamok/${v.category_link}`}><a>{v.category_name}</a></Link>
-              </div>
+              <Item arrow="horizontal" onClick={() => {Router.push('/napryamok/[napryamok]', `/napryamok/${v.category_link}`)}} key={v.category_id}>
+                {v.category_name}
+                <Brief>{v.categories.length}
+                {
+                  v.categories.length === 1 ? ' напрямок' : v.categories.length >= 5 ? ' напрямків' : ' напрямки'
+                }
+</Brief>
+              </Item>
             )
           })
         }
-      </div>
+      </List>
     </Layout>
   )
 }

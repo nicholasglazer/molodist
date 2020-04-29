@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
 import s from '@emotion/styled'
-
+import { Icon } from 'antd-mobile'
 
 import { useContext } from 'react'
 import Theme from '../theme/theme'
@@ -15,7 +15,7 @@ const goBack = () => Router.back()
 
 export const siteTitle = 'Молодiсть - все про навчання'
 
-export default function Layout({ children, home }) {
+export default function Layout({ children, home, filter }) {
   const theme = useContext(ThemeContext)
   const currentTheme = Theme[theme]
   return (
@@ -24,60 +24,90 @@ export default function Layout({ children, home }) {
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          content="Learn how to build a personal website using Next.js"
+          content="найдите свой вуз в украине, учавствуйте в дискуссиях"
         />
         <meta
           property="og:image"
-          content={`https://og-image.now.sh/${encodeURI(
-            siteTitle
-          )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
+          content={``}
         />
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <header>
+      <Header>
         {home ? (
-          <>
-            <img
-              src="/images/profile.jpg"
-              alt={name}
-            />
-            <h1 >{name}</h1>
-          </>
+            <Title>{name}</Title>
         ) : (
-          <>
-            <a onClick={goBack}>Назад</a>
+          <BackHeader>
+            <div>
             <Link href="/">
-              <a>
-                <img
-                  src="/images/profile.jpg"
-                  alt={name}
-                />
-              </a>
+              <Title>
+                {name}
+              </Title>
             </Link>
-            <h2>
-              <Link href="/">
-                <a>{name}</a>
-              </Link>
-            </h2>
-          </>
+            </div>
+            <div>
+              <Icon onClick={goBack} type="left" size="lg"/>
+              {
+                filter ? (
+            <Link href="/filter">
+              <BigLink>
+                Фильтр
+              </BigLink>
+            </Link>
+                ) : null
+
+              }
+            </div>
+          </BackHeader>
         )}
-      </header>
+      </Header>
+
       <main style = {{
-        padding: "1rem",
         backgroundColor: `${currentTheme.backgroundColor}`,
         color: `${currentTheme.textColor}`,
       }}>{children}</main>
+
       {!home && (
         <div >
           <Link href="/napryamky_navchannya">
-            <a>← Back to home</a>
+            <a>← Напрямки навчання</a>
           </Link>
         </div>
       )}
     </div>
   )
 }
+
+const Title = s.h1`
+font-size: 20px;
+margin-top: 0px;
+`
+
+const BigLink = s.a`
+font-size: 18px;
+`
+const Header = s.header`
+margin: 10px 0px;
+display: flex;
+`
+const BackHeader = s.div`
+display: flex;
+flex-direction: column;
+flex: 1;
+> div {
+padding: 0px 14px;
+display: flex;
+justify-content: space-between;
+flex: 1;
+border-bottom: 1px solid #ccc;
+}
+> div:last-of-type {
+padding-top: 20px;
+padding-bottom: 8px;
+padding-left: 10px;
+border: none;
+}
+`
 const Wrapper = s.div`
 .container {
   max-width: 36rem;

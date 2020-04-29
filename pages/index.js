@@ -2,6 +2,11 @@ import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
+//import Button from 'antd-mobile/lib/button';  // for js
+//import 'antd-mobile/lib/button/style/css';        // for css
+//import 'antd-mobile/lib/date-picker/style';         // that will import less
+//import { Button } from 'antd-mobile'
+      //<Button>DTAE</Button>
 
 export default function Home({ allPostsData }) {
   return (
