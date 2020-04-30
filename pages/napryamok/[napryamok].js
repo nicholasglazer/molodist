@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useReducer, useState, useEffect } from 'react'
 import Link from 'next/link'
 import Layout, { siteTitle } from '../../components/layout'
 import { getAllDirectionIds, getDirectionData, getSortedDataByDirections } from '../../lib/directions'
@@ -9,20 +9,37 @@ import Router from 'next/router'
 
 //<AuditOutlined />
 // TODO cache filter results
+//
+//
+
+const initialState = {
+
+}
+
+function reducer(state, action) {
+  switch(action.type) {
+    case 'update':
+
+      return {}
+    return
+  }
+}
+
 export default function Napryamok({ sortedDirection, directionData, l }) {
   const { categories } = sortedDirection.data
-  //const { categories } = directionData.data
-            //<Grid data={v.licenses} isCarousel onClick={() => {}} />
-  // <img src={dataItem.icon} style={{ width: '75px', height: '75px' }} alt="" />
-  // TODO v.type and other filters
-  const [filterState, setFilterState] = useState([]);
-  console.log('sorted data', sortedDirection)
+
+  console.log('sorted data', l)
 
   useEffect(() => {setLicensesState(l.reduce((acc, cur) => cur + acc ))});
 
-  useEffect(() => setFilterState(JSON.parse(window.localStorage.getItem('filtersState')) || []), [categories]);
 
+  useEffect(() => setFilterState(JSON.parse(window.localStorage.getItem('filtersState')) || []), []);
+
+  const [filterState, setFilterState] = useState([]);
   const [licensesState, setLicensesState] = useState([]);
+
+  const [state, setState] = useReducer(reducer, initialState);
+
 
 
 const hotpink = {
@@ -35,7 +52,7 @@ const hotpink = {
 
           //setLicensesState(licensesFilter)
   return (
-    <Layout filter>
+    <Layout back>
       <SpecialitiesWrapper>
         <Title>{licensesState}</Title>
       {
@@ -67,7 +84,7 @@ const hotpink = {
 
           </div>
         )}
-        )
+                      )
       }
       </SpecialitiesWrapper>
     </Layout>

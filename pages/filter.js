@@ -1,68 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import Router from 'next/router'
 import { Switch, List, Button, WhiteSpace } from 'antd-mobile'
 
 import { getSortedPostsData } from '../lib/posts'
 import Layout from '../components/layout'
 
+import FilterContext from '../context/filter/filterCtx.js'
 import CheckBoxFilter from '../components/checkBoxFilter'
 import SelectFilter from '../components/selectFilter'
 
 import utilStyles from '../styles/utils.module.css'
 
-
-const initialQualificationState = [
-    {
-      value: 0,
-      checked: true,
-      label: 'Доктор філософії'
-    },
-    {
-      value: 1,
-      checked: true,
-      label: 'Магістр',
-    },
-    {
-      value: 2,
-      checked: true,
-      label: 'Бакалавр'
-    },
-    {
-      value: 3,
-      checked: true,
-      label: 'Спеціаліст'
-    },
-    {
-      value: 4,
-      checked: true,
-      label: 'Молодший спеціаліст'
-    }
-]
-
-const initialPropertyState = [
-{
-  value: 0,
-  checked: true,
-  label: 'Державна'
-},
-{
-  value: 1,
-  checked: true,
-  label: 'Приватна'
-},
-{
-  value: 2,
-  checked: true,
-  label: 'Комунальна'
-}
-]
-
-const initialRegionState = ["Всі регіони"]
-
-const initialUniState = true
-const initialCollState = true
-
 export default function Filter() {
+  const { initialRegionState, initialUniState, initialCollState, initialQualificationState, initialPropertyState } = useContext(FilterContext)
 
   useEffect(() => {setRegionFilter(JSON.parse(window.localStorage.getItem('filtersState')) ? JSON.parse(window.localStorage.getItem('filtersState'))['regionState'] : initialRegionState)}, []);
   useEffect(() => {setUniCheck(JSON.parse(window.localStorage.getItem('filtersState')) ? JSON.parse(window.localStorage.getItem('filtersState'))['uniCheck'] : initialUniState)}, []);
@@ -97,7 +47,8 @@ export default function Filter() {
 
   const goBack = () => Router.back()
   return (
-    <Layout back>
+    <Layout resetFilter={resetFilter} filter>
+      <div style={{ marginBottom: '24px' }}>
       <SelectFilter title='Оберіть регіон' setRegion={setRegionFilter} current={regionState || initialRegionState} />
       <List
         renderHeader={() => 'Освітні категорії'}
@@ -117,7 +68,8 @@ export default function Filter() {
       </List>
       <CheckBoxFilter title='Оберіть кваліфікацію' setMultipleCheck={setQualificationState} current={qualificationState} />
       <CheckBoxFilter title='Оберіть формy власностi' setMultipleCheck={setPropertyState} current={propertyTypeState} />
-      <Button onClick={resetFilter} style={{ margin: '24px 4px 12px 4px' }} type="ghost" size="small">Обнулити фільтр</Button><WhiteSpace />
+      </div>
+      <div onClick={resetFilter} style={{ padding: '8px 8px 0 0', fontSize: '13px', fontWeight: '600', textAlign: 'right' }}>Обнулити фільтр</div>
     </Layout>
   )
 }
@@ -130,3 +82,55 @@ export async function getStaticProps() {
     }
   }
 }
+
+
+// const initialQualificationState = [
+//     {
+//       value: 0,
+//       checked: true,
+//       label: 'Доктор філософії'
+//     },
+//     {
+//       value: 1,
+//       checked: true,
+//       label: 'Магістр',
+//     },
+//     {
+//       value: 2,
+//       checked: true,
+//       label: 'Бакалавр'
+//     },
+//     {
+//       value: 3,
+//       checked: true,
+//       label: 'Спеціаліст'
+//     },
+//     {
+//       value: 4,
+//       checked: true,
+//       label: 'Молодший спеціаліст'
+//     }
+// ]
+
+// const initialPropertyState = [
+// {
+//   value: 0,
+//   checked: true,
+//   label: 'Державна'
+// },
+// {
+//   value: 1,
+//   checked: true,
+//   label: 'Приватна'
+// },
+// {
+//   value: 2,
+//   checked: true,
+//   label: 'Комунальна'
+// }
+// ]
+
+// const initialRegionState = ["Всі регіони"]
+
+// const initialUniState = true
+// const initialCollState = true

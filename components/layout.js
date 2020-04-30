@@ -15,7 +15,7 @@ const goBack = () => Router.back()
 
 export const siteTitle = 'Молодість - все про навчання'
 
-export default function Layout({ children, home, filter }) {
+export default function Layout({ children, resetFilter, home, back, filter }) {
   const theme = useContext(ThemeContext)
   const currentTheme = Theme[theme]
   return (
@@ -44,11 +44,12 @@ export default function Layout({ children, home, filter }) {
                 {name}
               </Title>
             </Link>
+              {filter && children[1]}
             </div>
             <div>
               <Icon onClick={goBack} type="left" size="lg"/>
               {
-                filter ? (
+                back ? (
             <Link href="/filter">
               <BigLink>
                 Фільтр
@@ -64,8 +65,7 @@ export default function Layout({ children, home, filter }) {
 
       <main style = {{
         backgroundColor: `${currentTheme.backgroundColor}`,
-        color: `${currentTheme.textColor}`,
-        height: `100%`,
+        color: `${currentTheme.textColor}`
       }}>{children}</main>
 
       {!home && (
