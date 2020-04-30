@@ -1,7 +1,7 @@
 const Theme = {
   light: {
     textColor: "#000",
-    backgroundColor: "#fff"
+    backgroundColor: "#f5f5f9"
   },
   dark: {
     textColor: "#fff",

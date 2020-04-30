@@ -13,7 +13,7 @@ import utilStyles from '../styles/utils.module.css'
 const name = 'Молодiсть'
 const goBack = () => Router.back()
 
-export const siteTitle = 'Молодiсть - все про навчання'
+export const siteTitle = 'Молодість - все про навчання'
 
 export default function Layout({ children, home, filter }) {
   const theme = useContext(ThemeContext)
@@ -51,7 +51,7 @@ export default function Layout({ children, home, filter }) {
                 filter ? (
             <Link href="/filter">
               <BigLink>
-                Фильтр
+                Фільтр
               </BigLink>
             </Link>
                 ) : null
@@ -65,6 +65,7 @@ export default function Layout({ children, home, filter }) {
       <main style = {{
         backgroundColor: `${currentTheme.backgroundColor}`,
         color: `${currentTheme.textColor}`,
+        height: `100%`,
       }}>{children}</main>
 
       {!home && (
@@ -85,12 +86,15 @@ margin-top: 0px;
 
 const BigLink = s.a`
 font-size: 18px;
+margin-right: 8px;
 `
 const Header = s.header`
 margin: 10px 0px;
 display: flex;
 `
 const BackHeader = s.div`
+margin-bottom: 12px;
+border-bottom: 1px solid #dcdcdc;
 display: flex;
 flex-direction: column;
 flex: 1;
@@ -99,11 +103,11 @@ padding: 0px 14px;
 display: flex;
 justify-content: space-between;
 flex: 1;
-border-bottom: 1px solid #ccc;
+border-bottom: 1px solid #e1e2e3;
 }
 > div:last-of-type {
-padding-top: 20px;
-padding-bottom: 8px;
+padding-top: 12px;
+padding-bottom: 12px;
 padding-left: 10px;
 border: none;
 }

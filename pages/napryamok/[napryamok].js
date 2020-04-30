@@ -4,20 +4,26 @@ import Layout, { siteTitle } from '../../components/layout'
 import { getAllDirectionIds, getDirectionData, getSortedDataByDirections } from '../../lib/directions'
 import s from '@emotion/styled'
 import {css} from '@emotion/core'
-import { Icon, Grid } from 'antd-mobile'
+import { Icon, Grid, Badge } from 'antd-mobile'
 import Router from 'next/router'
 
 //<AuditOutlined />
 // TODO cache filter results
-export default function Napryamok({ sortedDirection, directionData }) {
+export default function Napryamok({ sortedDirection, directionData, l }) {
   const { categories } = sortedDirection.data
   //const { categories } = directionData.data
             //<Grid data={v.licenses} isCarousel onClick={() => {}} />
   // <img src={dataItem.icon} style={{ width: '75px', height: '75px' }} alt="" />
   // TODO v.type and other filters
   const [filterState, setFilterState] = useState([]);
+  console.log('sorted data', sortedDirection)
 
-  useEffect(() => setFilterState(JSON.parse(window.localStorage.getItem('filtersState')) || []), []);
+  useEffect(() => {setLicensesState(l.reduce((acc, cur) => cur + acc ))});
+
+  useEffect(() => setFilterState(JSON.parse(window.localStorage.getItem('filtersState')) || []), [categories]);
+
+  const [licensesState, setLicensesState] = useState([]);
+
 
 const hotpink = {
   color: '#333',
@@ -25,9 +31,13 @@ const hotpink = {
   flexDirection: 'column',
   justifyContent: 'space-between'
 }
+  console.log('state', filterState)
 
+          //setLicensesState(licensesFilter)
   return (
     <Layout filter>
+      <SpecialitiesWrapper>
+        <Title>{licensesState}</Title>
       {
         categories.map(v => {
           const licensesFilter = v.licenses
@@ -37,11 +47,13 @@ const hotpink = {
                                  .filter(x => filterState.regionState[0] !== 'Всі регіони' ? filterState.regionState[0] === x.region_name : true)
           return(
           <div key={v.name}>
-            <SpecialityTitle className="sub-title">{v.name}</SpecialityTitle>
-            <div>{licensesFilter.length}</div>
+            <SpecialityTitle>
+              <SpecialityTitleText>{v.name.toUpperCase()}</SpecialityTitleText>
+              <SpecialityLength><Badge text={licensesFilter.length} overflowCount={500} /></SpecialityLength>
+            </SpecialityTitle>
             <Grid data={licensesFilter}
                   isCarousel
-                  columnNum={4}
+                  columnNum={2}
                   itemStyle={hotpink}
                   carouselMaxRow={1}
                   renderItem={dataItem => (
@@ -55,33 +67,45 @@ const hotpink = {
 
           </div>
         )}
-                      )
+        )
       }
+      </SpecialitiesWrapper>
     </Layout>
   )
 }
 
+const Title = s.div`
+
+`
+
 const GridCellWrapper = s.div`
 padding: 4px;
 display: flex;
-height: 100%;
+min-height: 100%;
 flex-direction: column;
 justify-content: space-between;
 flex: 1;
 `
 
-const LicenseWrapper = s.div`
+const SpecialityTitle = s.div`
 display: flex;
-flex-wrap: wrap;
-justify-content: center;
+padding: 4px;
+font-size: 11px;
+justify-content: flex-between;
 align-items: center;
-word-wrap: wrap;
+`
+const SpecialityLength = s.div`
+align-self: center;
+padding-left: 8px;
+padding-right: 4px;
 `
 
-const SpecialityTitle = s.div`
-padding: 4px;
-border: 1px solid #ccc;
-font-size: 15px;
+const SpecialityTitleText = s.div`
+color: #888;
+flex: 1;
+`
+const SpecialitiesWrapper = s.div`
+height: 100%;
 `
 
 export async function getStaticPaths() {
@@ -94,10 +118,16 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const directionData = getDirectionData(params.napryamok)
   const sortedDirection = getSortedDataByDirections(directionData.directionId)
+
+  const { categories } = sortedDirection.data
+  const l = categories.map(x => x.licenses.length)
+  console.log('cat', l)
+
   return {
     props: {
       directionData,
-      sortedDirection
+      sortedDirection,
+      l
     }
   }
 }

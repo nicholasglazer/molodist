@@ -8,6 +8,10 @@ body {
   font-size: 18px;
 }
 
+#__next > div {
+  height: 100vh;
+}
+
 * {
   box-sizing: border-box;
 }
