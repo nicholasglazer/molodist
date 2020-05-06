@@ -89,7 +89,7 @@ font-size: 18px;
 margin-right: 8px;
 `
 const Header = s.header`
-margin: 10px 0px;
+margin-top: 10px;
 display: flex;
 `
 const BackHeader = s.div`
