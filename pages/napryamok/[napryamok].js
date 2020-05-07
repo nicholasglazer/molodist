@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic'
 import FallbackUEL from '../../components/FallbackUEL'
 
 const DynamicComponent = dynamic(
-  () => import('../../components/UniqueEduList.js'),
+  () => setTimeout(import('../../components/UniqueEduList.js'), 5000),
   {
     loading: () => <FallbackUEL />,
     ssr: false

@@ -60,7 +60,7 @@ const UniqueList = (props) => {
                                                                                     {q.short}
                                                                                   </div>
                                                                                   <div css={css`color: ${y.certificate_expired !== null ? dateNow >= dateExpired ? 'indianred' : 'forestgreen' : '#a9a9a9'};`}>
-                                                                                    {y.certificate_expired !== null ? dateNow >= dateExpired ? <span>термін дії <b>{y.certificate}</b> закінчився</span> : <span><b>{y.certificate}</b> дійсний до: </span> :  <span>уточнюйте дані у навчального закладу<b>{y.certificate}</b></span>} <b>{y.certificate_expired}</b>
+                                                                                    {y.certificate_expired !== null ? dateNow >= dateExpired ? <span>сертифікат <b>{y.certificate}</b> закінчився</span> : <span><b>{y.certificate}</b> дійсний до: </span> :  <span>уточнюйте дані у навчального закладу<b>{y.certificate}</b></span>} <b>{y.certificate_expired}</b>
                                                                                   </div>
                                                                                 </span>
                                                                             }
