@@ -6,9 +6,10 @@ import { getAllDirectionIds, getDirectionData, getSortedDataByDirections } from 
 //import UniqueEduList from '../../components/UniqueEduList.js'
 import dynamic from 'next/dynamic'
 import FallbackUEL from '../../components/FallbackUEL'
+import ScrollBtn from '../../components/ScrollBtn.js'
 
 const DynamicComponent = dynamic(
-  () => setTimeout(import('../../components/UniqueEduList.js'), 5000),
+  () => import('../../components/UniqueEduList.js'),
   {
     loading: () => <FallbackUEL />,
     ssr: false
@@ -25,6 +26,7 @@ export default function Napryamok({ l, unique }) {
     propertyTypeState: init.initialPropertyState,
     regionState: init.initialRegionState
   }
+  const [showScroll, setShowScroll] = useState(false)
   const [filterState, setFilterState] = useState(fillState);
   useEffect(() => setFilterState(() => JSON.parse(window.localStorage.getItem('filtersState')) || hydrateFilter()), []);
   // TODO make as helper func
@@ -38,13 +40,15 @@ export default function Napryamok({ l, unique }) {
                             .filter(v => filterState.propertyTypeState.some(k => k.checked && k.label === v.financingType))
                             .filter(v => filterState.regionState[0] !== 'Всі регіони' ? filterState.regionState[0] === v.region : true).length
 
+
   return (
     <Layout back>
-      <div>
+      <div css={{position: 'relative'}}>
         <Title>Спецiальностей:</Title>
         {l.map(x => <Title key={x.link}>{x.name}: {x.length}</Title>)}
         <Title>{`Навчальних закладiв по цьому напрямку: ${countUnique} / ${unique.length}`}</Title>
         <DynamicComponent categories={l} unique={unique} filterState={filterState}/>
+        <ScrollBtn />
       </div>
     </Layout>
   )

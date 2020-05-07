@@ -59,7 +59,7 @@ const gradient = keyframes`
   }
 `
 const stylePattern = css`
-animation: ${gradient} 6s ease-in-out infinite;
+animation: ${gradient} 5s ease-in-out infinite;
 background: linear-gradient(-60deg, #e4e5e7, #ddd, #f0f0f1, #ddd);
 color: transparent;
 background-size: 300%;
