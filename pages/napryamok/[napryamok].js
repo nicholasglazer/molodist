@@ -1,149 +1,49 @@
-import { useReducer, useState, useEffect } from 'react'
-import Link from 'next/link'
-import Layout, { siteTitle } from '../../components/layout'
-import { onlyUnique } from '../../utils/helpers'
-import initialFilterState from '../../context/filter/filterData'
-import { getAllDirectionIds, getDirectionData, getSortedDataByDirections } from '../../lib/directions'
+import { useState, useEffect, useContext } from 'react'
 import s from '@emotion/styled'
-import {css} from '@emotion/core'
-import { Icon, Grid, Badge, Card, List, WhiteSpace, Accordion } from 'antd-mobile'
-import Router from 'next/router'
+import FilterContext from '../../context/filter/filterCtx.js'
+import Layout, { siteTitle } from '../../components/layout'
+import { getAllDirectionIds, getDirectionData, getSortedDataByDirections } from '../../lib/directions'
+//import UniqueEduList from '../../components/UniqueEduList.js'
+import dynamic from 'next/dynamic'
 
-// import Slider from '../../components/slider'
-//             <Slider data={licensesFilter} title={'slider component'}/>
-//<AuditOutlined />
-// TODO cache filter results
-//
-//
-
-// const initialState = {
-
-// }
-
-// function reducer(state, action) {
-//   switch(action.type) {
-//     case 'update':
-
-//       return {}
-//       return
-//   }
-// }
-
-export default function Napryamok({ sortedDirection, directionData, l, unique }) {
-  //console.log('unique', unique);
-  const { initialQualificationState } = initialFilterState;
-
-  //console.log('sorted data', l)
-
-  //useEffect(() => {setLicensesState(l.reduce((acc, cur) => cur + acc ))});
-
-
-  const [filterState, setFilterState] = useState([]);
-  const [licensesState, setLicensesState] = useState([]);
-
-  const { categories } = sortedDirection.data;
-  useEffect(() => setFilterState(() => {
-    console.log(JSON.parse(window.localStorage.getItem('filtersState')))
-    return JSON.parse(window.localStorage.getItem('filtersState'))
-  }), []);
-  //useEffect(() => setFilterState(JSON.parse(window.localStorage.getItem('filtersState')) || []), []);
-  //const [state, setState] = useReducer(reducer, initialState);
-
-  const { collCheck, uniCheck, qualificationState, propertyTypeState, regionState } = filterState;
-
-  const hotpink = {
-    color: '#333',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between'
+const DynamicComponent = dynamic(
+  () => import('../../components/UniqueEduList.js'),
+  {
+    loading: () => <p>Loading ...</p>,
+    ssr: false
   }
-  //console.log('state', filterState)
+)
+// TODO cache filter results
+export default function Napryamok({ l, unique }) {
 
-  //setLicensesState(licensesFilter)
-  console.log('filter stte', qualificationState)
-
+  const init = useContext(FilterContext);
+  const [filterState, setFilterState] = useState(init);
+  useEffect(() => setFilterState(() => {
+    return JSON.parse(window.localStorage.getItem('filtersState')) || init;
+  }), []);
   // const licensesFilter = v.licenses
   //                         .filter(x => collCheck && x.type === 'college' || uniCheck && x.type === 'university')
   //                         .filter(x => qualificationState.some(k => k.checked && k.label === x.qualification_group_name))
   //                         .filter(x => propertyTypeState.some(k => k.checked && k.label === x.university_financing_type_name))
   //                         .filter(x => regionState[0] !== 'Всі регіони' ? regionState[0] === x.region_name : true)
+  //
+  console.log('prop', filterState)
   return (
     <Layout back>
       <div>
         <Title>{`Навчальних закладiв по цьому напрямку ${unique.length}`}</Title>
-        {
-          unique.map(v => {
-            const k = v.directions
-            //const j = categories.map(x => k[x.name])
-            const qState = initialQualificationState
-            console.log('v', v)
-            return (
-              <div>
-                <AllEdu>
-                  <div key={v.edrpou}>
-                    <WhiteSpace size="lg" />
-                    <Card full>
-                      <Card.Header
-                        style={{wordBreak: 'break-word', fontSize: '15px', color: '#ccc !important'}}
-                        title={`${v.university_name}`}
-                        thumb="/images/eduBuilding64.png"
-                        onClick={() => {Router.push('/universitet/[universitet]', `/universitet/${v.edrpou}`)}}
-                      />
-                      <Card.Body style={{padding: 0}}>
-                        <Accordion accordion>
-                          {
-                            categories.map(x => {
-                              //console.log('cat', )
-                              // iterate qualification state over existing qualifications, show all but different colors
-
-                              //console.log('.p,.', qState, )
-                              return k[x.name] ?
-                                (
-                                  <Accordion.Panel header={x.name} >
-                                    <List style={{color: '#ccc'}}>
-                                      {
-                                        qualificationState ? qualificationState.map(q => {
-                                          console.log('imp', qualificationState)
-                                          return (
-                                            q.checked ? (
-                                              <List.Item>
-                                                {
-                                                  <span style={k[x.name] ? k[x.name].filter(n => (n === q.label))[0] ? {color: 'green'} : {color: '#ccc'} : []}>
-                                                    {q.label}
-                                                  </span>
-                                                }
-                                              </List.Item>) : null
-                                          )}) : null
-                                      }
-                                    </List>
-                                  </Accordion.Panel>
-                                ) : null
-                            })
-                          }
-                        </Accordion>
-                      </Card.Body>
-                      <Card.Footer style={{fontSize: '13px', margin: '2px 0'}} content={'Лiцензiй по напрямкам:'} extra={<div style={{paddingRight: '4px'}}>{v.countLicenses}</div>} />
-                    </Card>
-                  </div>
-                </AllEdu>
-              </div>
-            )
-          })
-        }
+        <DynamicComponent categories={l} unique={unique} filterState={filterState}/>
       </div>
     </Layout>
   )
 }
 
 
-const AllEdu = s.div`
-word-break: break-all;
-`
-
 const Title = s.div`
 color: #787979;
 margin-top: 12px;
 `
+
 
 const GridCellWrapper = s.div`
 padding: 4px;
@@ -188,13 +88,11 @@ export async function getStaticProps({ params }) {
 
   const { categories } = sortedDirection.data
   const unique = sortedDirection.uniqueEdu
-  const l = categories.map(x => x.licenses.length)
-  // console.log('cat', l)
+  const l = categories.map(x => ({length: x.licenses.length, name: x.name, link: x.link}))
 
+  // console.log('cat', l)
   return {
     props: {
-      directionData,
-      sortedDirection,
       l,
       unique
     }
@@ -267,3 +165,75 @@ export async function getStaticProps({ params }) {
 //                   )
 //   }
 // </SpecialitiesWrapper>
+
+
+        // {
+        //   unique
+        //     .filter(v => isCollege && v.type === 'college' || isUniversity && v.type === 'university')
+        //     .filter(v => v.licenses.some(j => qualifications.some(k => k.checked && k.label === j.qualification_group_name )))
+        //     .filter(v => propertyTypes.some(k => k.checked && k.label === v.financingType))
+        //     .filter(v => region[0] !== 'Всі регіони' ? region[0] === v.region : true)
+        //     .map((v,i) => {
+        //     const k = v.directions
+        //       console.log('u', v)
+        //     return (
+        //       <div key={i}>
+        //         <AllEdu>
+        //           <div>
+        //             <WhiteSpace size="lg" />
+        //             <Card full>
+        //               <Card.Header
+        //                 style={{wordBreak: 'break-word', fontSize: '15px', color: '#ccc !important'}}
+        //                 title={`${v.name}`}
+        //                 thumb="/images/eduBuilding64.png"
+        //                 onClick={() => {Router.push('/universitet/[universitet]', `/universitet/${v.edrpou}`)}}
+        //               />
+        //               <Card.Body style={{padding: 0}}>
+        //                 <Accordion accordion>
+        //                   {
+        //                     l.map((x,i) => {
+        //                       // iterate qualification state over existing qualifications, show not filtered but different colors
+        //                       // k[x.name] ? k[x.name].filter(n => (n === q.label))[0] ? {color: 'green'} : {color: '#ccc'} : []
+        //                       return k[x.name] ? (
+        //                           <Accordion.Panel css={{fontSize: '13px !important'}} key={i} header={x.name.toUpperCase()}>
+        //                             <List css={{color: '#ccc', fontSize: '13px'}}>
+        //                               {
+        //                                 v.licenses.map(y => {
+        //                                   // TODO each item should be a link to the edu licenses || contacts
+        //                                   let dateExpired = new Date(y.certificate_expired)
+        //                                   let dateNow = Date.now()
+        //                                   console.log(k[y.name], k[x.name])
+        //                                   return (
+        //                                     qualifications.map((q,i) => (
+
+        //                                       k[x.name] === k[y.name] && q.label === y.qualification_group_name && q.checked ? (
+        //                                         <List.Item key={i}>
+        //                                           {
+        //                                             <span css={css`display: flex; font-size: 13px; justify-content: space-between;`}>
+        //                                               <div>
+        //                                                 {q.short}
+        //                                               </div>
+        //                                               <div css={css`color: ${y.certificate_expired !== null ? dateNow >= dateExpired ? 'indianred' : 'forestgreen' : '#a9a9a9'};`}>
+        //                                                 {y.certificate_expired !== null ? dateNow >= dateExpired ? <span>термін дії <b>{y.certificate}</b> закінчився</span> : <span><b>{y.certificate}</b> дійсний до: </span> :  <span>уточнюйте дані у навчального закладу<b>{y.certificate}</b></span>} <b>{y.certificate_expired}</b>
+        //                                               </div>
+        //                                             </span>
+        //                                           }
+        //                                         </List.Item>) : null
+        //                                     ))
+        //                                   )})
+        //                               }
+        //                             </List>
+        //                           </Accordion.Panel>
+        //                         ) : null
+        //                     })
+        //                   }
+        //                 </Accordion>
+        //               </Card.Body>
+        //               <Card.Footer style={{fontSize: '13px', margin: '2px 0'}} content={'Лiцензiй по напрямкам:'} extra={<div style={{paddingRight: '4px'}}>{v.countLicenses}</div>} />
+        //             </Card>
+        //           </div>
+        //         </AllEdu>
+        //       </div>
+        //     )
+        //   })
+        // }

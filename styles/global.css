@@ -29,3 +29,8 @@ img {
   max-width: 100%;
   display: block;
 }
+
+.am-accordion-header {
+  color: #353838 !important;
+  font-size: 13px !important;
+}
