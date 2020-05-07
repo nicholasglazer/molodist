@@ -3,6 +3,7 @@ import { css, jsx } from '@emotion/core'
 import Router from 'next/router'
 
 const UniqueList = (props) => {
+  console.log('props', props)
     // FIXME naming problem
     const { regionState, collCheck, uniCheck, qualificationState, propertyTypeState } = props.filterState;
     const isCollege = collCheck;
