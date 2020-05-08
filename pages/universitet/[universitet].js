@@ -63,6 +63,12 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
           </div>
           <div>
             <IconWrapper>
+              <MdHourglassEmpty color="#888" size="22px"/>
+            </IconWrapper>
+            <AboutItem>{registration_year}</AboutItem>
+          </div>
+          <div>
+            <IconWrapper>
               <MdLocationCity color="#888" size="23px"/>
             </IconWrapper>
             <AboutItem>{koatuu_name}</AboutItem>
@@ -84,12 +90,6 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
               <FiPhone color="#888" size="20px"/>
             </IconWrapper>
             <AboutItem>{university_phone}</AboutItem>
-          </div>
-          <div>
-            <IconWrapper>
-              <MdHourglassEmpty color="#888" size="22px"/>
-            </IconWrapper>
-            <AboutItem>{registration_year}</AboutItem>
           </div>
           <div>
             <IconWrapper>
@@ -134,12 +134,13 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
 }
 
 const IconWrapper = s.div`
+margin-right: 10px;
 display: flex;
 justify-content: center;
 align-items: center;
-width: 36px;
-heigth: 36px;
-flex: 0 100%;
+min-width: 40px;
+height: 30px;
+flex: 0;
 svg {
 }
 `
@@ -148,6 +149,7 @@ const Educators = s.div`
 `
 
 const AboutItem = s.div`
+flex: 1;
 `
 
 const AboutTab = s.div`
@@ -157,9 +159,8 @@ display: flex;
 flex-direction: column;
 > div {
 display: flex;
-flex: 1;
-justify-content: flex-start;
-align-items: flex-start;
+justify-content: flex-end;
+align-items: center;
 }
 `
 const Head = s.div`
