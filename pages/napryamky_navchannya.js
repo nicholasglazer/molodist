@@ -9,7 +9,7 @@ const Item = List.Item;
 const Brief = Item.Brief;
 
 export default function Napryamky({ allDirectionsData }) {
-  console.log('alldir', allDirectionsData)
+  //console.log('alldir', allDirectionsData)
         //<title>{siteTitle}</title>
   return (
     <Layout filter>

@@ -108,7 +108,6 @@ export async function getStaticProps({ params }) {
   const unique = sortedDirection.uniqueEdu
   const l = categories.map(x => ({length: x.licenses.length, name: x.name, link: x.link}))
 
-  // console.log('cat', l)
   return {
     props: {
       l,
