@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core'
 import Router from 'next/router'
 
 const UniqueList = (props) => {
-  console.log('props', props)
+  //console.log('props', props)
     // FIXME naming problem
     const { regionState, collCheck, uniCheck, qualificationState, propertyTypeState } = props.filterState;
     const isCollege = collCheck;
@@ -21,7 +21,7 @@ const UniqueList = (props) => {
                   .filter(v => region[0] !== 'Всі регіони' ? region[0] === v.region : true)
                   .map((v,i) => {
                       const k = v.directions
-                      console.log('u', v)
+                      //console.log('u', v)
                       return (
                           <div key={i}>
                           <div css={{wordBreak: 'break-all'}}>
@@ -48,7 +48,7 @@ const UniqueList = (props) => {
                                                               // TODO each item should be a link to the edu licenses || contacts
                                                               let dateExpired = new Date(y.certificate_expired)
                                                               let dateNow = Date.now()
-                                                              console.log(k[y.name], k[x.name])
+                                                              //console.log(k[y.name], k[x.name])
                                                               return (
                                                                   qualifications.map((q,i) => (
 

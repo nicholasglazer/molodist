@@ -3,16 +3,16 @@ import Layout, { siteTitle } from '../../components/layout'
 import { getAllUniversityIds, getUniversityData } from '../../lib/universities'
 import s from '@emotion/styled'
 import { List, Tabs, WhiteSpace } from 'antd-mobile'
-import { FiMail, FiPhone, FiExternalLink} from 'react-icons/fi'
-import { FaUniversity } from 'react-icons/fa'
-import {GrMapLocation, GrLocationPin, GrCluster} from 'react-icons/gr'
-import {AiOutlineClockCircle} from 'react-icons/ai'
-import {MdHttp, MdBusiness, MdLocationCity, MdHourglassEmpty} from 'react-icons/md'
-import {GiSandsOfTime} from 'react-icons/gi'
+import { FiMail, FiPhone, FiExternalLink } from 'react-icons/fi'
+import { FaSearchLocation, FaUniversity, FaUserTie } from 'react-icons/fa'
+import { AiOutlineClockCircle } from 'react-icons/ai'
+import { MdHttp, MdBusiness, MdLocationCity, MdHourglassEmpty } from 'react-icons/md'
+import { GiMailbox } from 'react-icons/gi'
+import { RiGroup2Line } from 'react-icons/ri'
 
 export default function Universitet({ universityData: {data}, educatorsCount }) {
 
-  console.log('usiv', data)
+  //console.log('usiv', data)
   const tabs = [
     { title: 'Про заклaд' },
     { title: 'Учні' },
@@ -21,6 +21,7 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
     { title: 'Мапа' },
   ];
   const { koatuu_name,
+          post_index,
           education_type_name,
           profession_educators,
           profession_licenses,
@@ -50,45 +51,75 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
       </Head>
       <WhiteSpace/>
       <Tabs
-        renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4} />}
+        renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4}/>}
         tabs={tabs}
       >
         <AboutTab>
           <div>
-            <FaUniversity />
-            <div>{university_name_en}</div>
+            <IconWrapper>
+              <FaUniversity color="#888" size="22px"/>
+            </IconWrapper>
+            <AboutItem>{university_name_en}</AboutItem>
           </div>
           <div>
-            <MdLocationCity />
-            <div>{koatuu_name}</div>
+            <IconWrapper>
+              <MdLocationCity color="#888" size="23px"/>
+            </IconWrapper>
+            <AboutItem>{koatuu_name}</AboutItem>
           </div>
           <div>
-            <GrMapLocation />
-            <div>{university_address}</div>
+            <IconWrapper>
+              <FaSearchLocation color="#888" size="20px"/>
+            </IconWrapper>
+            <AboutItem>{university_address}</AboutItem>
           </div>
           <div>
-            <FiPhone />
-            <div>{university_phone}</div>
+            <IconWrapper>
+              <GiMailbox color="#888" size="24px"/>
+            </IconWrapper>
+            <AboutItem>{post_index}</AboutItem>
           </div>
           <div>
-            <MdHourglassEmpty />
-            <div>{registration_year}</div>
+            <IconWrapper>
+              <FiPhone color="#888" size="20px"/>
+            </IconWrapper>
+            <AboutItem>{university_phone}</AboutItem>
           </div>
           <div>
-            <MdHttp />
-            <div>{university_site}</div>
+            <IconWrapper>
+              <MdHourglassEmpty color="#888" size="22px"/>
+            </IconWrapper>
+            <AboutItem>{registration_year}</AboutItem>
           </div>
           <div>
-            <FiMail />
-            <div>{university_email}</div>
+            <IconWrapper>
+              <MdHttp color="#888" size="26px"/>
+            </IconWrapper>
+            <AboutItem>{university_site}</AboutItem>
           </div>
           <div>
-            <GrCluster />
-            <div>{university_financing_type_name}</div>
+            <IconWrapper>
+              <FiMail color="#888" size="20px"/>
+            </IconWrapper>
+            <AboutItem>{university_email}</AboutItem>
           </div>
           <div>
-            <MdBusiness />
-            <div>{university_governance_type_name}</div>
+            <IconWrapper>
+              <FaUserTie color="#888" size="19px"/>
+            </IconWrapper>
+            <AboutItem>{university_director_fio}</AboutItem>
+          </div>
+          <div>
+            <IconWrapper>
+              <RiGroup2Line color="#888" size="22px"/>
+            </IconWrapper>
+            <AboutItem>{university_financing_type_name}</AboutItem>
+          </div>
+          <div>
+            <IconWrapper>
+              <MdBusiness color="#888" size="21px"/>
+            </IconWrapper>
+            <AboutItem>{university_governance_type_name}</AboutItem>
           </div>
         </AboutTab>
         <Educators>
@@ -102,19 +133,33 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
   )
 }
 
+const IconWrapper = s.div`
+display: flex;
+justify-content: center;
+align-items: center;
+width: 36px;
+heigth: 36px;
+flex: 0 100%;
+svg {
+}
+`
 const Educators = s.div`
 
 `
 
+const AboutItem = s.div`
+`
+
 const AboutTab = s.div`
-padding: 8px;
+padding: 32px 12px 16px 12px;
 background: #fff;
+display: flex;
+flex-direction: column;
 > div {
 display: flex;
-align-items: center;
-svg {
-margin-right: 8px;
-}
+flex: 1;
+justify-content: flex-start;
+align-items: flex-start;
 }
 `
 const Head = s.div`
@@ -143,9 +188,9 @@ export async function getStaticProps({ params }) {
   const educatorsCount = universityData.data.educators.reduce((agg, {distance_count, part_time_count, full_time_count, external_count, evening_count}) => {
     return agg + parseInt(distance_count) + parseInt(part_time_count) + parseInt(full_time_count) + parseInt(external_count) + parseInt(evening_count);
   }, 0);
-  const edu = universityData.data.educators.reduce((agg, {distance_count, part_time_count, full_time_count, external_count, evening_count}) => {
-    Object.keys({})
-  })
+  // const edu = universityData.data.educators.reduce((agg, {distance_count, part_time_count, full_time_count, external_count, evening_count}) => {
+  //   Object.keys({})
+  // })
 
   return {
     props: {
