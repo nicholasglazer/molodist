@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState } from 'react'
 import Layout, { siteTitle } from '../../components/layout'
 import { getAllUniversityIds, getUniversityData } from '../../lib/universities'
 import s from '@emotion/styled'
@@ -18,6 +18,7 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
     { title: 'Учні' },
     { title: 'Факультети' },
     { title: 'Ліцензії' },
+    { title: 'Події' },
     { title: 'Мапа' },
   ];
   const { koatuu_name,
@@ -40,20 +41,17 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
           facultets,
           educators
         } = data;
-  return (
-    <Layout>
-      <Head>
-        <div style={{textAlign: 'right', fontSize: '17px', color: '#888', fontWeight: '500'}}>{university_short_name}</div>
-        <img style={{marginLeft: '12px'}} src="/images/eduBuilding64.png"/>
-        <Title isTrue={true}>
-          {university_name}
-        </Title>
-      </Head>
-      <WhiteSpace/>
-      <Tabs
-        renderTabBar={props => <Tabs.DefaultTabBar {...props} page={4}/>}
-        tabs={tabs}
-      >
+
+  const [tabState, setTabState] = useState(0);
+
+  const handleMapTransferClick = (e) => {
+    //setTabState(tabs.length - 1)
+    const url = `https://www.google.com/maps/search/?api=1&query=${koatuu_name}+${post_index}+${university_address}`
+    window.open(url, '_blank');
+  }
+  const about = tab => {
+    console.log('batbbb', tabState)
+    return (
         <AboutTab>
           <div>
             <IconWrapper>
@@ -73,11 +71,13 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
             </IconWrapper>
             <AboutItem>{koatuu_name}</AboutItem>
           </div>
-          <div>
+          <div onClick={handleMapTransferClick}>
             <IconWrapper>
-              <FaSearchLocation color="#888" size="20px"/>
+              <FaSearchLocation color="#888" size="19px"/>
             </IconWrapper>
-            <AboutItem>{university_address}</AboutItem>
+            <AboutItem css={{color: '#1e90ff'}}>
+              {university_address}
+            </AboutItem>
           </div>
           <div>
             <IconWrapper>
@@ -87,7 +87,15 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
           </div>
           <div>
             <IconWrapper>
-              <FiPhone color="#888" size="20px"/>
+              <FiMail color="#888" size="19px"/>
+            </IconWrapper>
+            <AboutItem>
+              <a href={`mailto:${university_email}`}>{university_email}</a>
+            </AboutItem>
+          </div>
+          <div>
+            <IconWrapper>
+              <FiPhone color="#888" size="19px"/>
             </IconWrapper>
             <AboutItem>{university_phone}</AboutItem>
           </div>
@@ -95,17 +103,15 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
             <IconWrapper>
               <MdHttp color="#888" size="26px"/>
             </IconWrapper>
-            <AboutItem>{university_site}</AboutItem>
+            <AboutItem>
+              <a href={`${university_site}`} target='_blank'>
+                {university_site.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0]}
+              </a>
+            </AboutItem>
           </div>
           <div>
             <IconWrapper>
-              <FiMail color="#888" size="20px"/>
-            </IconWrapper>
-            <AboutItem>{university_email}</AboutItem>
-          </div>
-          <div>
-            <IconWrapper>
-              <FaUserTie color="#888" size="19px"/>
+              <FaUserTie color="#888" size="18px"/>
             </IconWrapper>
             <AboutItem>{university_director_fio}</AboutItem>
           </div>
@@ -122,6 +128,27 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
             <AboutItem>{university_governance_type_name}</AboutItem>
           </div>
         </AboutTab>
+    )
+  }
+  return (
+    <Layout>
+      <Head>
+        <div style={{textAlign: 'right', fontSize: '17px', color: '#888', fontWeight: '500'}}>{university_short_name}</div>
+        <img style={{marginLeft: '12px'}} src="/images/eduBuilding64.png"/>
+        <Title isTrue={true}>
+          {university_name}
+        </Title>
+      </Head>
+      <WhiteSpace/>
+      <Tabs
+        prerenderingSiblingsNumber={0}
+        renderTabBar={props => <Tabs.DefaultTabBar {...props} activeTab={tabState} page={4}/>}
+        tabs={tabs}
+        page={tabState}
+        swipeable={false}
+        onTabClick={(tab, index) => setTabState(index)}
+      >
+        {about}
         <Educators>
           Всi учнi {educatorsCount}
         </Educators>
