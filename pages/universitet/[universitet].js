@@ -6,9 +6,10 @@ import { List, Tabs, WhiteSpace } from 'antd-mobile'
 import { FiMail, FiPhone, FiExternalLink } from 'react-icons/fi'
 import { FaSearchLocation, FaUniversity, FaUserTie } from 'react-icons/fa'
 import { AiOutlineClockCircle } from 'react-icons/ai'
-import { MdHttp, MdBusiness, MdLocationCity, MdHourglassEmpty } from 'react-icons/md'
-import { GiMailbox } from 'react-icons/gi'
+import { MdHttp, MdBusiness, MdLocationCity, MdHourglassEmpty, MdLaptopMac, MdTimelapse } from 'react-icons/md'
+import { GiMailbox, GiPathDistance } from 'react-icons/gi'
 import { RiGroup2Line } from 'react-icons/ri'
+import { BsMoon, BsSun } from 'react-icons/bs'
 
 export default function Universitet({ universityData: {data}, educatorsCount }) {
 
@@ -42,15 +43,7 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
           educators
         } = data;
 
-  const [tabState, setTabState] = useState(0);
-
-  const handleMapTransferClick = (e) => {
-    //setTabState(tabs.length - 1)
-    const url = `https://www.google.com/maps/search/?api=1&query=${koatuu_name}+${post_index}+${university_address}`
-    window.open(url, '_blank');
-  }
   const about = tab => {
-    console.log('batbbb', tabState)
     return (
         <AboutTab>
           <div>
@@ -63,7 +56,7 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
             <IconWrapper>
               <MdHourglassEmpty color="#888" size="22px"/>
             </IconWrapper>
-            <AboutItem>{registration_year}</AboutItem>
+            <AboutItem>{registration_year} рiк</AboutItem>
           </div>
           <div>
             <IconWrapper>
@@ -73,9 +66,9 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
           </div>
           <div onClick={handleMapTransferClick}>
             <IconWrapper>
-              <FaSearchLocation color="#888" size="19px"/>
+              <GiPathDistance color="#888" size="22px"/>
             </IconWrapper>
-            <AboutItem css={{color: '#1e90ff'}}>
+            <AboutItem css={{color: tabBarColor}}>
               {university_address}
             </AboutItem>
           </div>
@@ -90,7 +83,11 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
               <FiMail color="#888" size="19px"/>
             </IconWrapper>
             <AboutItem>
-              <a href={`mailto:${university_email}`}>{university_email}</a>
+              {
+                university_email.match(',')
+                  ? university_email.split(',').map(x => <a href={`mailto:${x}`}>{x}</a>)
+                  : (<a href={`mailto:${university_email}`}>{university_email}</a>)
+              }
             </AboutItem>
           </div>
           <div>
@@ -130,6 +127,17 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
         </AboutTab>
     )
   }
+  const [tabState, setTabState] = useState(0);
+
+  // FIXME global variables color management
+  const tabBarColor = '#0070f3'
+  const handleMapTransferClick = (e) => {
+    // DEPRECATED open last tab with map
+    //setTabState(tabs.length - 1)
+    const url = `https://www.google.com/maps/search/?api=1&query=${koatuu_name}+${post_index}+${university_address}`
+    window.open(url, '_blank');
+  }
+  console.log('educators', educators)
   return (
     <Layout>
       <Head>
@@ -146,11 +154,63 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
         tabs={tabs}
         page={tabState}
         swipeable={false}
+        tabBarActiveTextColor={tabBarColor}
         onTabClick={(tab, index) => setTabState(index)}
       >
         {about}
         <Educators>
-          Всi учнi {educatorsCount}
+          <h3>
+            Всi учнi {educatorsCount}
+          </h3>
+          <div>
+            {
+              educators.map(x => (
+                <Wrapper>
+                  <LeftSideWrapper>
+                    {
+                      parseInt(x.distance_count) !== 0 ?
+                        (<div>
+                           <MdLaptopMac />
+                           <div>
+                             {parseInt(x.distance_count) + parseInt(x.external_count)}
+                           </div>
+                         </div>) : null
+                    }
+                    {
+                      parseInt(x.evening_count) !== 0 ?
+                        (<div>
+                           <BsMoon/>
+                           <div>
+                             {x.evening_count}
+                           </div>
+                         </div>) : null
+                    }
+                    {
+                      parseInt(x.part_time_count) !== 0 ?
+                        (<div>
+                           <MdTimelapse />
+                           <div>
+                             {x.part_time_count}
+                           </div>
+                         </div>) : null
+                    }
+                    {
+                      parseInt(x.full_time_count) !== 0 ?
+                        (<div>
+                           <BsSun />
+                           <div>
+                             {x.full_time_count}
+                           </div>
+                         </div>) : null
+                    }
+                  </LeftSideWrapper>
+                  <RightSideWrapper>
+                    {x.speciality_name}
+                  </RightSideWrapper>
+                </Wrapper>
+              ))
+            }
+          </div>
         </Educators>
         <List>
           {facultets.map(x => <List.Item>{x}</List.Item> )}
@@ -171,8 +231,44 @@ flex: 0;
 svg {
 }
 `
+// REVIEW DRY
 const Educators = s.div`
+display: flex;
+justify-content: space-between;
+margin-bottom: 12px;
+flex-wrap: wrap;
+> h3 {
+flex: 0 100%;
+}
+}
+`
+const Wrapper = s.div`
+    display: flex;
 
+`
+const LeftSideWrapper = s.div`
+     color: #888;
+     flex: 0;
+     display: flex;
+     min-width: 120px;
+     justify-content: flex-end;
+     > div {
+     min-width: 30px;
+     max-width: 60px;
+     flex: 1;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     }
+`
+const RightSideWrapper = s.div`
+    background: white;
+    flex: 1;
+    align-items: center;
+    justify-content: flex-start;
+    display: flex;
+    padding-left: 12px;
 `
 
 const AboutItem = s.div`
