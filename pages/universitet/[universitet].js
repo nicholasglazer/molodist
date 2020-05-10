@@ -8,19 +8,21 @@ import { FaSearchLocation, FaUniversity, FaUserTie } from 'react-icons/fa'
 import { AiOutlineClockCircle } from 'react-icons/ai'
 import { MdHttp, MdBusiness, MdLocationCity, MdHourglassEmpty, MdLaptopMac, MdTimelapse } from 'react-icons/md'
 import { GiMailbox, GiPathDistance } from 'react-icons/gi'
-import { RiGroup2Line } from 'react-icons/ri'
+import { RiGroup2Line, RiUserStarLine } from 'react-icons/ri'
 import { BsMoon, BsSun } from 'react-icons/bs'
 
-export default function Universitet({ universityData: {data}, educatorsCount }) {
+export default function Universitet({ universityData: {data, sortedSpec}, educatorsCount }) {
 
-  //console.log('usiv', data)
+  // console.log('usiv', data.educators.filter(x => x.speciality_code === '014'))
+  // console.log('usiv', data.speciality_licenses.filter(x => x.speciality_code === '014'))
+  console.log('speccc', sortedSpec)
   const tabs = [
     { title: 'Про заклaд' },
     { title: 'Учні' },
-    { title: 'Факультети' },
     { title: 'Ліцензії' },
+    { title: 'Факультети' },
     { title: 'Події' },
-    { title: 'Мапа' },
+    { title: 'Філіали' },
   ];
   const { koatuu_name,
           post_index,
@@ -40,7 +42,9 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
           university_financing_type_name,
           university_governance_type_name,
           facultets,
-          educators
+          educators,
+          licenses,
+          branches
         } = data;
 
   const about = tab => {
@@ -127,7 +131,9 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
         </AboutTab>
     )
   }
-  const [tabState, setTabState] = useState(0);
+  const [tabState, setTabState] = useState(1);
+  const [toggleStudents, setToggleStudents] = useState(false);
+
 
   // FIXME global variables color management
   const tabBarColor = '#0070f3'
@@ -137,7 +143,8 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
     const url = `https://www.google.com/maps/search/?api=1&query=${koatuu_name}+${post_index}+${university_address}`
     window.open(url, '_blank');
   }
-  console.log('educators', educators)
+  // console.log('educators', educators[0])
+  // console.log('licensese', speciality_licenses[0])
   return (
     <Layout>
       <Head>
@@ -159,14 +166,58 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
       >
         {about}
         <Educators>
-          <h3>
-            Всi учнi {educatorsCount}
-          </h3>
+          <EducatorsHead>
+            <div>
+              <h3>
+                E
+              </h3>
+            </div>
+            <div>
+              <h3 onClick={() => setToggleStudents(!toggleStudents)}>
+                Всi учнi
+              </h3>
+              <div>
+                {educatorsCount}
+              </div>
+            </div>
+          </EducatorsHead>
           <div>
             {
               educators.map(x => (
                 <Wrapper>
+                  <RightSideWrapper>
+                    <div>{x.speciality_name}</div>
+                    <div>{x.specialization_name}</div>
+                  </RightSideWrapper>
                   <LeftSideWrapper>
+                            <SumEducators>
+                             <RiUserStarLine color="#888" size="18px" />
+                             <div>
+                               {parseInt(x.distance_count) + parseInt(x.external_count) + parseInt(x.evening_count) + parseInt(x.part_time_count) + parseInt(x.full_time_count)}
+                             </div>
+                           </SumEducators>
+                    {
+                      toggleStudents
+                        ? null
+                        : (<>
+                    {
+                      parseInt(x.full_time_count) !== 0 ?
+                        (<div>
+                           <BsSun />
+                           <div>
+                             {x.full_time_count}
+                           </div>
+                         </div>) : null
+                    }
+                    {
+                      parseInt(x.part_time_count) !== 0 ?
+                        (<div>
+                           <MdTimelapse />
+                           <div>
+                             {x.part_time_count}
+                           </div>
+                         </div>) : null
+                    }
                     {
                       parseInt(x.distance_count) !== 0 ?
                         (<div>
@@ -185,43 +236,45 @@ export default function Universitet({ universityData: {data}, educatorsCount }) 
                            </div>
                          </div>) : null
                     }
-                    {
-                      parseInt(x.part_time_count) !== 0 ?
-                        (<div>
-                           <MdTimelapse />
-                           <div>
-                             {x.part_time_count}
-                           </div>
-                         </div>) : null
-                    }
-                    {
-                      parseInt(x.full_time_count) !== 0 ?
-                        (<div>
-                           <BsSun />
-                           <div>
-                             {x.full_time_count}
-                           </div>
-                         </div>) : null
+                  </>)
                     }
                   </LeftSideWrapper>
-                  <RightSideWrapper>
-                    {x.speciality_name}
-                  </RightSideWrapper>
                 </Wrapper>
               ))
             }
           </div>
         </Educators>
+        <Licenses>
+          {speciality_licenses.map(x => <div>{x.speciality_name}</div>)}
+        </Licenses>
         <List>
           {facultets.map(x => <List.Item>{x}</List.Item> )}
         </List>
+        <Events>
+          Наразі немає створених подій
+        </Events>
+        <Branches>
+          {
+            branches.map(x => <div>
+            <div>
+              {x.koatuu_name}
+            </div>
+            <div>
+              {x.region_name !== 'КИЇВ' ? x.region_name : null}
+            </div>
+            <div>
+              {x.university_name}
+            </div>
+          </div>)
+          }
+        </Branches>
       </Tabs>
     </Layout>
   )
 }
 
 const IconWrapper = s.div`
-margin-right: 10px;
+margin-right: 4px;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -231,44 +284,86 @@ flex: 0;
 svg {
 }
 `
+const Events = s.div`
+min-height: 40vh;
+display: flex;
+justify-content: center;
+align-items: center;
+color: #888;
+`
+const Branches = s.div`
+padding: 32px 4px;
+min-height: 40vh;
+> div {
+border-left: 4px solid #fb9621;
+padding-left: 16px;
+margin-bottom: 16px;
+}
+`
+const SumEducators = s.div`
+> div:first-of-type {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+`
+const Licenses = s.div`
+display: flex;
+flex-direction: column;
+`
+
 // REVIEW DRY
 const Educators = s.div`
 display: flex;
 justify-content: space-between;
 margin-bottom: 12px;
 flex-wrap: wrap;
+> div {
+padding-left: 4px;
+}
+}
+`
+const EducatorsHead = s.div`
+display: flex;
 > h3 {
 flex: 0 100%;
-}
+background: white;
 }
 `
 const Wrapper = s.div`
-    display: flex;
-
+ display: flex;
+ border-left: 4px solid #9cda20;
+ flex-direction: column;
+ margin-bottom: 16px;
+ text-transform: uppercase;
+ color: #454647;
 `
 const LeftSideWrapper = s.div`
-     color: #888;
-     flex: 0;
-     display: flex;
-     min-width: 120px;
-     justify-content: flex-end;
-     > div {
-     min-width: 30px;
-     max-width: 60px;
-     flex: 1;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
-     }
+ color: #888;
+ flex: 0;
+ display: flex;
+ padding-bottom: 4px;
+ > div {
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+> div {
+margin-left: 4px;
+font-size: 15px;
+}
+padding-left: 10px;
+ }
 `
 const RightSideWrapper = s.div`
-    background: white;
-    flex: 1;
-    align-items: center;
-    justify-content: flex-start;
-    display: flex;
-    padding-left: 12px;
+ flex: 1;
+ align-items: center;
+ flex-wrap: wrap;
+ justify-content: flex-start;
+ display: flex;
+ padding-left: 12px;
+> div:first-of-type {
+color: green;
+}
 `
 
 const AboutItem = s.div`
@@ -276,7 +371,7 @@ flex: 1;
 `
 
 const AboutTab = s.div`
-padding: 32px 12px 16px 12px;
+padding: 32px 4px 16px 4px;
 background: #fff;
 display: flex;
 flex-direction: column;
@@ -312,8 +407,9 @@ export async function getStaticProps({ params }) {
   const educatorsCount = universityData.data.educators.reduce((agg, {distance_count, part_time_count, full_time_count, external_count, evening_count}) => {
     return agg + parseInt(distance_count) + parseInt(part_time_count) + parseInt(full_time_count) + parseInt(external_count) + parseInt(evening_count);
   }, 0);
+  // Should return array of objects with
   // const edu = universityData.data.educators.reduce((agg, {distance_count, part_time_count, full_time_count, external_count, evening_count}) => {
-  //   Object.keys({})
+  //   Object.keys(agg, {})
   // })
 
   return {
