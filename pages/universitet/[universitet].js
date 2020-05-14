@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Layout, { siteTitle } from '../../components/layout'
 import { getAllUniversityIds, getUniversityData } from '../../lib/universities'
 import s from '@emotion/styled'
-import { List, Tabs, WhiteSpace } from 'antd-mobile'
+import { Accordion, List, Tabs, WhiteSpace } from 'antd-mobile'
 import { FiMail, FiPhone, FiExternalLink } from 'react-icons/fi'
 import { FaSearchLocation, FaUniversity, FaUserTie } from 'react-icons/fa'
 import { AiOutlineClockCircle } from 'react-icons/ai'
@@ -11,18 +11,18 @@ import { GiMailbox, GiPathDistance } from 'react-icons/gi'
 import { RiGroup2Line, RiUserStarLine } from 'react-icons/ri'
 import { BsMoon, BsSun } from 'react-icons/bs'
 
-export default function Universitet({ universityData: {data, sortedSpec}, educatorsCount }) {
+export default function Universitet({ universityData: {data, sortedSpec, specResults}, educatorsCount }) {
 
   // console.log('usiv', data.educators.filter(x => x.speciality_code === '014'))
   // console.log('usiv', data.speciality_licenses.filter(x => x.speciality_code === '014'))
-  console.log('speccc', sortedSpec)
+  console.log('speccc', specResults)
   const tabs = [
-    { title: 'Про заклaд' },
-    { title: 'Учні' },
-    { title: 'Ліцензії' },
-    { title: 'Факультети' },
-    { title: 'Події' },
-    { title: 'Філіали' },
+    { title: "Про заклaд" },
+    { title: "Спеціальності" },
+    { title: "Факультети" },
+    { title: "Події" },
+    { title: "Філіали" },
+    { title: "Ком'юніті" },
   ];
   const { koatuu_name,
           post_index,
@@ -157,7 +157,7 @@ export default function Universitet({ universityData: {data, sortedSpec}, educat
       <WhiteSpace/>
       <Tabs
         prerenderingSiblingsNumber={0}
-        renderTabBar={props => <Tabs.DefaultTabBar {...props} activeTab={tabState} page={4}/>}
+        renderTabBar={props => <Tabs.DefaultTabBar {...props} activeTab={tabState} page={3}/>}
         tabs={tabs}
         page={tabState}
         swipeable={false}
@@ -165,6 +165,45 @@ export default function Universitet({ universityData: {data, sortedSpec}, educat
         onTabClick={(tab, index) => setTabState(index)}
       >
         {about}
+        <Specialities>
+        <Accordion defaultActiveKey="0" className="my-accordion">
+          <Accordion.Panel style={{margin: '12px 0'}} header="ad Реклама вашого унiверситету" className="pad">
+            Magna fermentum iaculis eu non diam phasellus vestibulum lorem sed. Massa vitae tortor condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue!
+          </Accordion.Panel>
+          {sortedSpec.map(x => (
+            <Accordion.Panel style={{margin: '4px 0'}} header={x.speciality_name}>
+            <List.Item>
+              {x.speciality_name}
+            </List.Item>
+            </Accordion.Panel>
+          ))}
+          <Accordion.Panel header="Title 2" className="pad">this is panel content2 or other</Accordion.Panel>
+        </Accordion>
+        </Specialities>
+        <List>
+          {facultets.map(x => <List.Item>{x}</List.Item> )}
+        </List>
+        <Events>
+          Наразі немає створених подій
+        </Events>
+        <Branches>
+          {
+            branches.map(x => <div>
+            <div>
+              {x.koatuu_name}
+            </div>
+            <div>
+              {x.region_name !== 'КИЇВ' ? x.region_name : null}
+            </div>
+            <div>
+              {x.university_name}
+            </div>
+          </div>)
+          }
+        </Branches>
+        <Licenses>
+          {speciality_licenses.map(x => <div>{x.speciality_name}</div>)}
+        </Licenses>
         <Educators>
           <EducatorsHead>
             <div>
@@ -244,30 +283,6 @@ export default function Universitet({ universityData: {data, sortedSpec}, educat
             }
           </div>
         </Educators>
-        <Licenses>
-          {speciality_licenses.map(x => <div>{x.speciality_name}</div>)}
-        </Licenses>
-        <List>
-          {facultets.map(x => <List.Item>{x}</List.Item> )}
-        </List>
-        <Events>
-          Наразі немає створених подій
-        </Events>
-        <Branches>
-          {
-            branches.map(x => <div>
-            <div>
-              {x.koatuu_name}
-            </div>
-            <div>
-              {x.region_name !== 'КИЇВ' ? x.region_name : null}
-            </div>
-            <div>
-              {x.university_name}
-            </div>
-          </div>)
-          }
-        </Branches>
       </Tabs>
     </Layout>
   )
@@ -312,6 +327,9 @@ display: flex;
 flex-direction: column;
 `
 
+const Specialities = s.div`
+
+`
 // REVIEW DRY
 const Educators = s.div`
 display: flex;
