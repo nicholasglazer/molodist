@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
 import s from '@emotion/styled'
-import { Icon } from 'antd-mobile'
+import { Popover, Icon } from 'antd-mobile'
 
 import { useContext } from 'react'
 import Theme from '../theme/theme'
@@ -10,14 +10,14 @@ import ThemeContext from '../theme/ThemeContext'
 
 import utilStyles from '../styles/utils.module.css'
 
-const name = 'Молодiсть'
-const goBack = () => Router.back()
+const name = 'Молодiсть';
+const goBack = () => Router.back();
 
-export const siteTitle = 'Молодість - все про навчання'
+export const siteTitle = 'Молодість - все про навчання';
 
-export default function Layout({ children, resetFilter, home, back, filter }) {
-  const theme = useContext(ThemeContext)
-  const currentTheme = Theme[theme]
+export default function Layout({ children, resetFilter, home, back, filter, uni }) {
+  const theme = useContext(ThemeContext);
+  const currentTheme = Theme[theme];
   return (
     <div>
       <Head>
@@ -33,41 +33,46 @@ export default function Layout({ children, resetFilter, home, back, filter }) {
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <Header>
-        {home ? (
-            <Title>{name}</Title>
-        ) : (
-          <BackHeader>
-            <div>
-            <Link href="/">
-              <Title>
-                {name}
-              </Title>
-            </Link>
-              {filter && children[1]}
-            </div>
-            <div>
-              <Icon onClick={goBack} type="left" size="lg"/>
-              {
-                back ? (
-            <Link href="/filter">
-              <BigLink>
-                Фільтр
-              </BigLink>
-            </Link>
-                ) : null
+      {/* header/navigator */}
+      {
+        !uni ? (
+          <Header>
+            {home ? (
+              <Title>{name}</Title>
+            ) : (
+              <BackHeader>
+                <div>
+                  <Link href="/">
+                    <Title>
+                      {name}
+                    </Title>
+                  </Link>
+                  {filter && children[1]}
+                </div>
+                <div>
+                  <Icon onClick={goBack} type="left" size="lg"/>
+                  {
+                    back ? (
+                      <Link href="/filter">
+                        <BigLink>
+                          Фільтр
+                        </BigLink>
+                      </Link>
+                    ) : null
 
-              }
-            </div>
-          </BackHeader>
-        )}
-      </Header>
-
+                  }
+                </div>
+              </BackHeader>
+            )}
+          </Header>
+        ) : null
+      }
+      {/* main child body  */}
       <main style = {{
         backgroundColor: `${currentTheme.backgroundColor}`,
         color: `${currentTheme.textColor}`
       }}>{children}</main>
-
+      {/* footer */}
       {!home && (
         <div >
           <Link href="/napryamky_navchannya">
