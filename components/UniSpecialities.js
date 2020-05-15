@@ -1,0 +1,146 @@
+import s from '@emotion/styled'
+import { Icon, Popover, Accordion, List, Tabs, WhiteSpace } from 'antd-mobile'
+import { AiOutlineFieldTime } from 'react-icons/ai'
+import { GiCheckboxTree } from 'react-icons/gi'
+import { RiUserStarLine } from 'react-icons/ri'
+import { BsMoon, BsSun, BsArrowUpDown } from 'react-icons/bs'
+
+// TODO make smaller components
+const SpecialitiesTab = ({specResults}) => {
+    const Item = Popover.Item;
+    return (
+        <Specialities>
+          <Accordion defaultActiveKey="0" className="my-accordion">
+            <CompactFilter>
+              <div style={{display: 'flex', alignItems: 'center'}}>
+                {`Спеціальнойстей показано:`}
+                <div style={{fontSize: '13px', color: '#555657', marginLeft: '4px' }}>
+                  {specResults.length}
+                </div>
+              </div>
+              <Popover overlayClassName="fortest"
+                       overlayStyle={{ color: 'currentColor' }}
+                       visible={false}
+                       overlay={[
+                           (<Item key="4" value="scan" data-seed="logId">Алфавiту</Item>),
+                           (<Item key="5" value="special" style={{ whiteSpace: 'nowrap' }}>Студенти</Item>),
+                           (<Item key="6" value="button ct">
+                                                                                                              <span style={{ marginRight: 5 }}>Часи</span>
+                                                                                                            </Item>),
+                       ]}
+                       align={{
+                           overflow: { adjustY: 0, adjustX: 0 },
+                           offset: [-10, 0],
+                       }}
+              >
+                <div style={{
+                    height: '100%',
+                    padding: '0 15px',
+                    marginRight: '-15px',
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+                >
+                  <BsArrowUpDown color="#888" size="18px" />
+                </div>
+              </Popover>
+            </CompactFilter>
+            {/* NOTE possible ad feature */}
+            {/* <Accordion.Panel style={{margin: '12px 0'}} header="ad Реклама вашого унiверситету" className="pad"> */}
+            {/*   Magna fermentum iaculis eu non diam phasellus vestibulum lorem sed. Massa vitae tortor condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue! */}
+            {/* </Accordion.Panel> */}
+            {specResults.map(x => [
+                <AccordionHeader>
+                  <SumEducators>
+                    <RiUserStarLine color="#888" size="18px" />
+                    <CountedNumber>
+                      {x.studCount}
+                    </CountedNumber>
+                  </SumEducators>
+                  <SumEducators>
+                    <AiOutlineFieldTime color="#888" size="18px" />
+                    <CountedNumber>
+                      {x.hoursCount}
+                    </CountedNumber>
+                  </SumEducators>
+
+                  {
+                      x.isSpec
+                          ? <SumSpecializations>
+                    <GiCheckboxTree color="#888" size="22px" />
+                    <CountedNumber>
+                      {x.merged.filter(x => x.specialization_name !== '').length}
+                    </CountedNumber>
+                  </SumSpecializations>
+                      : null
+                  }
+                </AccordionHeader>,
+                <Accordion.Panel key={x.speciality_id} style={{margin: '4px 0'}} header={(<div>{x.speciality_name}</div>)}>
+                  {
+                      !x.isSpec
+                          ? x.merged.map((y, i) =>
+                              <List.Item key={i}>
+                                <div>
+                                  {y.qualification_group_name}
+                                </div>
+                                <div>
+                                  {y.certificate && y.certificate !== ' ' ? y.certificate : <div>'Нема даних'</div>}
+                                </div>
+                              </List.Item>
+                          )
+                          : (<Accordion>
+         {x.merged.map((k,i) =>(
+             <Accordion.Panel key={i} header={k.specialization_name}>
+               {k.qualification_group_name}
+             </Accordion.Panel>
+         ))}
+       </Accordion>
+                            )}
+                </Accordion.Panel>
+            ])}
+            <Accordion.Panel header="Title 2" className="pad">this is panel content2 or other</Accordion.Panel>
+          </Accordion>
+        </Specialities>
+    )
+}
+
+const AccordionHeader = s.div`
+display: flex;
+`
+const SumSpecializations = s.div`
+align-self: flex-end;
+display: flex;
+align-items: center;
+margin-left: auto;
+color: #999;
+padding-right: 12px;
+div:first-of-type {
+}
+div:last-of-type {
+text-transform: uppercase;
+}
+`
+const Specialities = s.div`
+`
+const CompactFilter = s.div`
+display: flex;
+padding: 32px 16px 32px 8px;
+justify-content: space-between;
+color: #555656;
+font-size: 13px;
+`
+const SumEducators = s.div`
+width: 60px;
+display: flex;
+align-items: center;
+color: #777;
+margin-left: 8px;
+margin-right: 8px;
+`
+const CountedNumber = s.div`
+margin: 0 4px;
+color: #454749;
+font-size: 15px;
+`
+
+export default SpecialitiesTab;
