@@ -39,7 +39,7 @@ export default function Universitet({ universityData: {data, sortedSpec, specRes
         onTabClick={(tab, index) => setTabState(index)}
       >
         <AboutTab data={data} />
-        <SpecialitiesTab specResults={specResults} />
+        <SpecialitiesTab specResults={specResults} educatorsCount={educatorsCount}/>
         <FacultiesTab facultets={facultets} />
         <EventsTab />
         <BranchesTab branches={branches}/>
