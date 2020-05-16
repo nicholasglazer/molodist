@@ -13,7 +13,7 @@ const SpecialitiesTab = ({specResults, educatorsCount}) => {
           <Accordion defaultActiveKey="0" className="my-accordion">
             <CompactFilter>
               <div style={{display: 'flex', alignItems: 'center'}}>
-                {`Спеціальнойстей показано:`}
+                {`Спеціальнойстей:`}
                 <div style={{fontSize: '13px', color: '#555657', marginLeft: '4px' }}>
                   {specResults.length}
                 </div>
@@ -50,6 +50,7 @@ const SpecialitiesTab = ({specResults, educatorsCount}) => {
             {/* <Accordion.Panel style={{margin: '12px 0'}} header="ad Реклама вашого унiверситету" className="pad"> */}
             {/*   Magna fermentum iaculis eu non diam phasellus vestibulum lorem sed. Massa vitae tortor condimentum lacinia quis vel eros donec ac odio tempor orci dapibus ultrices in iaculis nunc sed augue! */}
             {/* </Accordion.Panel> */}
+            <div style={{marginLeft: '8px'}}>Учнiв:</div>
             <CountPanel>
               <SumEducators>
                 <RiUserStarLine color="#888" size="18px" />
@@ -58,13 +59,15 @@ const SpecialitiesTab = ({specResults, educatorsCount}) => {
                 </CountedNumber>
               </SumEducators>
               <SumEducators>
-                <AiOutlineFieldTime color="#888" size="18px" />
-                <CountedNumber>
-                  {educatorsCount}
-                </CountedNumber>
+                        <AiOutlineFieldTime color="#888" size="18px" />
+                        <CountedNumber>
+                        {educatorsCount}
+                        </CountedNumber>
               </SumEducators>
             </CountPanel>
             {specResults
+             .sort((a,b) => a.studCount - b.studCount)
+             .sort((a,b) => (`${a.speciality_name}`).localeCompare(b.speciailty_name))
              .map(x => [
 
                 <AccordionHeader>
@@ -74,25 +77,28 @@ const SpecialitiesTab = ({specResults, educatorsCount}) => {
                       {x.studCount}
                     </CountedNumber>
                   </SumEducators>
-                  <SumEducators>
-                    <AiOutlineFieldTime color="#888" size="18px" />
-                    <CountedNumber>
-                      {x.hoursCount}
-                    </CountedNumber>
-                  </SumEducators>
-
+                  {
+                      x.hoursCount ? (
+                          <SumEducators>
+                            <AiOutlineFieldTime color="#888" size="18px" />
+                            <CountedNumber>
+                              {x.hoursCount}
+                            </CountedNumber>
+                          </SumEducators>
+                      ) : (<div>Нема даних</div>)
+                  }
                   {
                       x.isSpec
-                          ? <SumSpecializations>
-                                         <GiCheckboxTree color="#888" size="22px" />
-                    <CountedNumber>
-                      {x.merged.filter(x => x.specialization_name !== '').length}
-                    </CountedNumber>
-                  </SumSpecializations>
-                      : null
+                          ? (<SumSpecializations>
+                               <GiCheckboxTree color="#888" size="22px" />
+                               <CountedNumber>
+                                 {x.merged.filter(x => x.specialization_name !== '').length}
+                               </CountedNumber>
+                             </SumSpecializations>)
+                          : null
                   }
                 </AccordionHeader>,
-                <Accordion.Panel key={x.speciality_id} style={{margin: '3px 0 24px 0'}} header={(<div>{x.speciality_name}</div>)}>
+                 <Accordion.Panel key={x.speciality_id} style={{margin: '3px 0 24px 0'}} header={(<div>{x.speciality_name}</div>)}>
                   {
                       !x.isSpec
                           ? x.merged.map((y, i) =>
@@ -106,16 +112,14 @@ const SpecialitiesTab = ({specResults, educatorsCount}) => {
                               </List.Item>
                           )
                           : (<Accordion>
-                          {x.merged.map((k,i) =>(
-                              <Accordion.Panel key={i} header={k.specialization_name}>
-                                {k.qualification_group_name}
-                              </Accordion.Panel>
-                          ))}
-                                                                             </Accordion>
-                            )}
-                </Accordion.Panel>
+                               {x.merged.map((k,i) =>(
+                                   <Accordion.Panel key={i} header={k.specialization_name}>
+                                     {k.qualification_group_name}
+                                   </Accordion.Panel>
+                               ))}
+                             </Accordion>)}
+                 </Accordion.Panel>
             ])}
-            <Accordion.Panel header="Title 2" className="pad">this is panel content2 or other</Accordion.Panel>
           </Accordion>
         </Specialities>
     )

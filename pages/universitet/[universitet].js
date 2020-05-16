@@ -14,6 +14,7 @@ import SpecialitiesTab from '../../components/UniSpecialities'
 
 export default function Universitet({ universityData: {data, sortedSpec, specResults}, educatorsCount }) {
   const { university_short_name, university_name, facultets, branches } = data;
+  console.log('data: ', specResults )
   const tabs = [
     { title: "Про заклaд" },
     { title: "Спеціальності" },
