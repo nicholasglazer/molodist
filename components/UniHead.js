@@ -82,7 +82,7 @@ padding-right: 12px;
 padding-left: 4px;
 justify-content: space-between;
 align-items: center;
-width: 100%;
+min-width: 99%;
 height: 56px;
 top: 0;
 left: 0;
