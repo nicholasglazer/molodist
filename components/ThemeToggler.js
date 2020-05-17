@@ -1,14 +1,6 @@
 import React from "react";
-import ThemeContext from "../Context/ThemeContext";
+import ThemeContext from "../theme/ThemeContext";
 
-const themeTogglerStyle = {
-  cursor: "pointer"
-}
-const ThemeToggler = () => {
-  return(
-      <div style = {themeTogglerStyle}>
-      </div>
-  );
-}
+const ThemeToggler = () => <div style={{cursor: 'pointer'}}></div>;
 
 export default ThemeToggler;

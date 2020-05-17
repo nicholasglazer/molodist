@@ -35,14 +35,15 @@ export default function Napryamok({ l, unique }) {
     return fillState
   }
 
-  const countUnique = unique.filter(x => filterState.collCheck && x.type === 'college' || filterState.uniCheck && x.type === 'university')
-                            .filter(v => v.licenses.some(j => filterState.qualificationState.some(k => k.checked && k.label === j.qualification_group_name )))
-                            .filter(v => filterState.propertyTypeState.some(k => k.checked && k.label === v.financingType))
-                            .filter(v => filterState.regionState[0] !== 'Всі регіони' ? filterState.regionState[0] === v.region : true).length
+  const countUnique = unique
+        .filter(x => filterState.collCheck && x.type === 'college' || filterState.uniCheck && x.type === 'university')
+        .filter(v => v.licenses.some(j => filterState.qualificationState.some(k => k.checked && k.label === j.qualification_group_name )))
+        .filter(v => filterState.propertyTypeState.some(k => k.checked && k.label === v.financingType))
+        .filter(v => filterState.regionState[0] !== 'Всі регіони' ? filterState.regionState[0] === v.region : true).length
 
 
   return (
-    <Layout back>
+    <Layout filter search>
       <div css={{position: 'relative'}}>
         <Title>Спецiальностей:</Title>
         {l.map(x => <Title key={x.link}>{x.name}: {x.length}</Title>)}

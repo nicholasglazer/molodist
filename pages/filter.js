@@ -47,7 +47,7 @@ export default function Filter() {
 
   const goBack = () => Router.back()
   return (
-    <Layout resetFilter={resetFilter} filter>
+    <Layout resetFilter={resetFilter}>
       <div style={{ marginBottom: '24px' }}>
       <SelectFilter title='Оберіть регіон' setRegion={setRegionFilter} current={regionState || initialRegionState} />
       <List

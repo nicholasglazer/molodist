@@ -12,7 +12,7 @@ export default function Napryamky({ allDirectionsData }) {
   //console.log('alldir', allDirectionsData)
         //<title>{siteTitle}</title>
   return (
-    <Layout filter>
+    <Layout filter search>
       <List renderHeader={() => 'Оберiть напрямок:'}>
         {
           allDirectionsData.map(v => {
