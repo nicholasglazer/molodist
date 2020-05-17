@@ -25,7 +25,6 @@ export default function Universitet({ universityData: {data, sortedSpec, specRes
   ];
 
   const [tabState, setTabState] = useState(1);
-
   return (
     <Layout uni>
       <UniHead shortName={university_short_name} name={university_name} />
@@ -40,7 +39,7 @@ export default function Universitet({ universityData: {data, sortedSpec, specRes
         onTabClick={(tab, index) => setTabState(index)}
       >
         <AboutTab data={data} />
-        <SpecialitiesTab specResults={specResults} educatorsCount={educatorsCount}/>
+        <SpecialitiesTab specResults={specResults} educatorsCount={educatorsCount} />
         <FacultiesTab facultets={facultets} />
         <EventsTab />
         <BranchesTab branches={branches}/>

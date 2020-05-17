@@ -1,13 +1,21 @@
+import { useState } from 'react'
 import s from '@emotion/styled'
 import { Icon, Popover, Accordion, List, WhiteSpace } from 'antd-mobile'
 import { AiOutlineFieldTime } from 'react-icons/ai'
 import { GiCheckboxTree } from 'react-icons/gi'
 import { RiUserStarLine } from 'react-icons/ri'
 import { BsMoon, BsSun, BsArrowUpDown } from 'react-icons/bs'
+import * as R from 'ramda'
 
 // TODO make smaller components
-const SpecialitiesTab = ({specResults, educatorsCount}) => {
+//
+const SpecialitiesTab = ({ specResults, educatorsCount }) => {
+    const [studSortState, setStudSortState] = useState('studCount');
+    const [toggleSortState, setToggleSortState] = useState(true);
+
     const Item = Popover.Item;
+    const sortSpecialitiesByName = toggleSortState ? R.ascend(R.prop(studSortState)) : R.descend(R.prop(studSortState));
+    const sorted = R.sort(sortSpecialitiesByName, specResults);
     return (
         <Specialities>
           <Accordion defaultActiveKey="0" className="my-accordion">
@@ -21,6 +29,7 @@ const SpecialitiesTab = ({specResults, educatorsCount}) => {
               <Popover overlayClassName="fortest"
                        overlayStyle={{ color: 'currentColor' }}
                        visible={false}
+                       onSelect={(node, i) => i === 0 ? [setStudSortState('speciality_name'), setToggleSortState(!toggleSortState)] : i === 1 ? [setStudSortState('studCount'), setToggleSortState(!toggleSortState)] : [setStudSortState('hoursCount'), setToggleSortState(!toggleSortState)] }
                        overlay={[
                            (<Item key="4" value="scan" data-seed="logId">Алфавiту</Item>),
                            (<Item key="5" value="special" style={{ whiteSpace: 'nowrap' }}>Студенти</Item>),
@@ -65,13 +74,16 @@ const SpecialitiesTab = ({specResults, educatorsCount}) => {
                         </CountedNumber>
               </SumEducators>
             </CountPanel>
-            {specResults
-             .sort((a,b) => a.studCount - b.studCount)
-             .sort((a,b) => (`${a.speciality_name}`).localeCompare(b.speciailty_name))
+            {sorted
+             // .sort((a,b) => studCountState ? b.studCount - a.studCount : a.studCount - b.studCount)
+             // .sort(function(a, b){
+             //     if(a.speciality_name < b.speciality_name) { return -1; }
+             //     if(a.speciality_name > b.speciality_name) { return 1; }
+             //     return 0;
+             // })
              .map(x => [
-
-                <AccordionHeader>
-                  <SumEducators>
+                 <AccordionHeader>
+                   <SumEducators>
                     <RiUserStarLine color="#888" size="18px" />
                     <CountedNumber>
                       {x.studCount}
@@ -183,3 +195,4 @@ font-size: 15px;
 `
 
 export default SpecialitiesTab;
+
