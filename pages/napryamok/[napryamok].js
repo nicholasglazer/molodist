@@ -92,6 +92,7 @@ flex: 1;
 `
 const SpecialitiesWrapper = s.div`
 height: 100%;
+box-shadow: 0px 0px 10px #444;
 `
 
 export async function getStaticPaths() {

@@ -13,7 +13,7 @@ export default function Napryamky({ allDirectionsData }) {
         //<title>{siteTitle}</title>
   return (
     <Layout filter search>
-      <List renderHeader={() => 'Оберiть напрямок:'}>
+      <List renderHeader={() => 'Шукайте навчальний заклад за напрямками:'}>
         {
           allDirectionsData.map(v => {
             return (
