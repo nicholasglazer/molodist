@@ -35,6 +35,7 @@ const FooterComponent = () => (
         </Link>
       </div>
       <Disclaimer>
+        Ми співпрацюємо з навчальними закладами, компаніями і талановитими людьми; побудуємо краще майбутнє разом.
       </Disclaimer>
         <FooterPagesLinks css={insetDeepShadow}>
           <Link href="/support" css={styledLink}>
@@ -62,17 +63,17 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 padding: 24px 0;
-box-shadow: inset 0px 4px 4px rgba(104, 102, 102, .125);
+box-shadow: inset 0px 4px 4px rgba(120, 120, 120, .1);
 `
 const AllRights = s.div`
 padding-left: 0;
 `
 const Disclaimer = s.div`
-letter-spacing: 8px;
+font-size: 16px;
+text-shadow: 2px 2px 3px rgba(255,255,255,.3);
 font-weight: 600;
-font-size: 1.1rem;
-padding-top: 48px;
-opacity: .8;
+color: #5f5f5f;
+padding: 24px 36px;
 `
 const FooterPagesLinks = s.div`
 display: flex;
