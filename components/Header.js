@@ -6,6 +6,7 @@ import s from '@emotion/styled'
 import { Popover, Icon } from 'antd-mobile'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import SearchBar from './SearchBar'
+import ResetFilterButton from './ResetFilterButton'
 
 
 const myImg = src => <img src={`https:gw.alipayobjects.com/zos/rmsportal/${src}.svg`} className="am-icon am-icon-xs" alt="" />;
@@ -14,12 +15,12 @@ const Item = Popover.Item;
 const goBack = () => Router.back();
 const name = 'Молодiсть';
 
-const HeaderComponent = ({search, filter, dots}) => {
+const HeaderComponent = ({resetFilter, reset, search, filter, dots}) => {
   return(
     <HeaderWrapper>
       <TopHeader>
         <div>
-          <Icon onClick={goBack} color="#888" type="left" size="lg" style={{width: '46px'}} />
+          <Icon onClick={goBack} color="#888" type="left" size="lg" />
         </div>
         <div>
           <Title>
@@ -37,6 +38,9 @@ const HeaderComponent = ({search, filter, dots}) => {
                   </BigLink>
                 </Link>
             : null
+          }
+          {
+              reset ? <ResetFilterButton resetFilter={resetFilter}/> : null
           }
           {
             dots
@@ -78,7 +82,6 @@ const HeaderComponent = ({search, filter, dots}) => {
   );
 }
 
-//{filter && children[1]}
 const HeaderWrapper = s.header`
 display: flex;
 flex-direction: column;
@@ -86,6 +89,7 @@ flex-direction: column;
 const TopHeader = s.div`
 display: flex;
 flex: 1;
+padding: 0 12px;
 justify-content: space-between;
 align-items: center;
 > div {
@@ -94,7 +98,6 @@ align-items: center;
  align-items: center;
  &:last-of-type {
   justify-content: flex-end;
-
  }
 }
 `

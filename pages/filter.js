@@ -8,6 +8,7 @@ import Layout from '../components/layout'
 import FilterContext from '../context/filter/filterCtx.js'
 import CheckBoxFilter from '../components/checkBoxFilter'
 import SelectFilter from '../components/selectFilter'
+import ResetFilterButton from '../components/ResetFilterButton'
 
 import utilStyles from '../styles/utils.module.css'
 
@@ -45,31 +46,33 @@ export default function Filter() {
     setPropertyState(initialPropertyState)
   }
 
+  // TODO goback button
   const goBack = () => Router.back()
   return (
-    <Layout resetFilter={resetFilter}>
+    <Layout resetFilter={resetFilter} reset>
       <div style={{ marginBottom: '24px' }}>
-      <SelectFilter title='Оберіть регіон' setRegion={setRegionFilter} current={regionState || initialRegionState} />
-      <List
-        renderHeader={() => 'Освітні категорії'}
-      >
-        <List.Item
-          extra={<Switch
-            checked={collCheck}
-            onChange={() => setCollCheck(!collCheck)}
-          />}
-        >Коледжі</List.Item>
-        <List.Item
-          extra={<Switch
-            checked={uniCheck}
-            onChange={() => setUniCheck(!uniCheck)}
-          />}
-        >Університети</List.Item>
-      </List>
-      <CheckBoxFilter title='Оберіть кваліфікацію' setMultipleCheck={setQualificationState} current={qualificationState} />
-      <CheckBoxFilter title='Оберіть формy власностi' setMultipleCheck={setPropertyState} current={propertyTypeState} />
+        <SelectFilter title='Оберіть регіон' setRegion={setRegionFilter} current={regionState || initialRegionState} />
+        <List renderHeader={() => 'Освітні категорії'}>
+          <List.Item extra={<Switch
+                              checked={collCheck}
+                              onChange={() => setCollCheck(!collCheck)} />}
+          >
+            Коледжі
+          </List.Item>
+          <List.Item
+            extra={<Switch
+                     checked={uniCheck}
+                     onChange={() => setUniCheck(!uniCheck)} />}
+          >
+            Університети
+          </List.Item>
+        </List>
+        <CheckBoxFilter title='Оберіть кваліфікацію' setMultipleCheck={setQualificationState} current={qualificationState} />
+        <CheckBoxFilter title='Оберіть формy власностi' setMultipleCheck={setPropertyState} current={propertyTypeState} />
       </div>
-      <div onClick={resetFilter} style={{ padding: '8px 8px 0 0', fontSize: '13px', fontWeight: '600', textAlign: 'right' }}>Обнулити фільтр</div>
+      <div style={{padding: '0 24px 24px 0'}}>
+        <ResetFilterButton resetFilter={resetFilter}/>
+      </div>
     </Layout>
   )
 }
