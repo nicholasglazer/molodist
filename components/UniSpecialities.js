@@ -154,7 +154,7 @@ font-size: 13px;
 const SpecialitiesCount = s.div`
 font-size: 13px;
 color: #777;
-margin: 12px 8px;
+margin: 12px 16px;
 display: flex;
 justify-content: space-between;
 `

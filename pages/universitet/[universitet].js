@@ -7,10 +7,15 @@ import Layout, { siteTitle } from '../../components/layout'
 
 import UniHead from '../../components/UniHead'
 import AboutTab from '../../components/UniAbout'
+import UniSpecialitiesFallback from '../../components/UniSpecialitiesFallback'
 
 // TODO make a fallback
 const SpecialitiesTab = dynamic(
-  () => import('../../components/UniSpecialities')
+  () => import('../../components/UniSpecialities'),
+  {
+    loading: () => <UniSpecialitiesFallback />,
+    ssr: false
+  }
 )
 const CommunityTab = dynamic(
   () => import('../../components/UniCommunity'),
@@ -39,7 +44,7 @@ export default function Universitet({ universityData: {data, sortedSpec, specRes
 
   const [tabState, setTabState] = useState(0);
   return (
-    <Layout uni>
+    <Layout dots>
       <UniHead shortName={university_short_name} name={university_name} />
       <WhiteSpace />
       <Tabs

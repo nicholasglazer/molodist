@@ -9,7 +9,7 @@ import Footer from './Footer'
 
 export const siteTitle = 'Молодість - все про навчання';
 
-export default function Layout({ children, resetFilter, filter, search }) {
+export default function Layout({ children, resetFilter, filter, search, dots }) {
   const theme = useContext(ThemeContext);
   const currentTheme = Theme[theme];
   return (
@@ -28,7 +28,7 @@ export default function Layout({ children, resetFilter, filter, search }) {
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
 
-      <Header filter={filter} search={search} />
+      <Header filter={filter} search={search} dots={dots} />
 
       <main style = {{backgroundColor: `${currentTheme.backgroundColor}`, color: `${currentTheme.textColor}`}}>
         {children}

@@ -1,47 +1,8 @@
 import s from '@emotion/styled'
-import { Icon, Popover } from 'antd-mobile'
-import { BsThreeDotsVertical } from 'react-icons/bs'
 import Router from 'next/router'
-
-
-const myImg = src => <img src={`https:gw.alipayobjects.com/zos/rmsportal/${src}.svg`} className="am-icon am-icon-xs" alt="" />;
-const Item = Popover.Item;
-
-const goBack = () => Router.back();
 
 const UniHead = ({shortName, name}) => (
     <Head>
-      <UniHeader>
-        <Icon onClick={goBack} type="left" size="lg"/>
-        <Popover mask
-                 overlayClassName="fortest"
-                 overlayStyle={{ color: 'currentColor' }}
-                 visible={false}
-                 overlay={[
-                     (<Item key="4" value="scan" icon={myImg('tOtXhkIWzwotgGSeptou')} data-seed="logId">Відсканувати</Item>),
-                     (<Item key="5" value="special" icon={myImg('PKAgAqZWJVNwKsAJSmXd')} style={{ whiteSpace: 'nowrap' }}>QR Код</Item>),
-                     (<Item key="6" value="button ct" icon={myImg('uQIYTFeRrjPELImDRrPt')}>
-                        <span style={{ marginRight: 5 }}>Допомога</span>
-                      </Item>
-                     ),
-                 ]}
-                 align={{
-                     overflow: { adjustY: 0, adjustX: 0 },
-                     offset: [-10, 0],
-                 }}
-        >
-          <div style={{
-              height: '100%',
-              padding: '0 15px',
-              marginRight: '-15px',
-              display: 'flex',
-              alignItems: 'center',
-          }}
-          >
-            <BsThreeDotsVertical size="20"/>
-          </div>
-        </Popover>
-      </UniHeader>
       <HeadImg style={{marginLeft: '12px'}} src="/images/eduBuilding64.png"/>
       <div style={{textAlign: 'right', fontSize: '17px', color: '#888', fontWeight: '500'}}>{shortName}</div>
       <Title isTrue={true}>
