@@ -5,7 +5,7 @@ import Link from 'next/link'
 import s from '@emotion/styled'
 import { Popover, Icon } from 'antd-mobile'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import SearchBar from './SearchBar'
+//import SearchBar from './SearchBar'
 import ResetFilterButton from './ResetFilterButton'
 
 
@@ -76,7 +76,6 @@ const HeaderComponent = ({resetFilter, reset, search, filter, dots}) => {
         </div>
       </TopHeader>
       <BottomHeader>
-        <SearchBar />
       </BottomHeader>
     </HeaderWrapper>
   );

@@ -6,6 +6,7 @@ import { GiCheckboxTree } from 'react-icons/gi'
 import { RiUserStarLine } from 'react-icons/ri'
 import { BsHash, BsMoon, BsSun, BsArrowUpDown } from 'react-icons/bs'
 import * as R from 'ramda'
+import SearchFilter from './SearchFilter'
 
 // TODO make smaller components
 //
@@ -23,9 +24,31 @@ const SpecialitiesTab = ({ specResults, educatorsCount, hoursCount }) => {
 
     const sortSpecialitiesByName = toggleSortState ? R.ascend(R.prop(studSortState)) : R.descend(R.prop(studSortState));
     const sorted = R.sort(sortSpecialitiesByName, specResults);
+
+    // TODO DRY: make reusable component
+    const [word, setWord] = useState('');
+    const [filterDisplay, setFilterDisplay] = useState(sorted);
+
+    const handleChange = e => {
+        let oldList = sorted.map(x => ({ ...x, speciality_name: x.speciality_name.toLowerCase() }));
+        if (e !== "") {
+            let newList = [];
+            setWord(e);
+            console.log('word', word.length)
+            newList = oldList.filter(x => x.speciality_name.includes(word.toLowerCase()));
+            setFilterDisplay(newList);
+        } else {
+            setFilterDisplay(sorted);
+        }
+    }
+    //console.log('filetr, display', word)
     return (
         <Specialities>
           <Accordion defaultActiveKey="0" className="my-accordion">
+            <SearchFilter cancel={setWord}
+                          value={word}
+                          placeholder="Пошук спецiальностi"
+                          handleChange={handleChange} />
             <CompactFilter>
               <CountPanel>
                 <SumEducators>
@@ -80,7 +103,7 @@ const SpecialitiesTab = ({ specResults, educatorsCount, hoursCount }) => {
                 {`${specResults.length}/${specResults.length}`}
               </div>
             </SpecialitiesCount>
-            {sorted
+            {filterDisplay
              .map(x => [
                  <AccordionHeader>
                    <SumEducators>
