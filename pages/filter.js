@@ -49,7 +49,7 @@ export default function Filter() {
   // TODO goback button
   const goBack = () => Router.back()
   return (
-    <Layout resetFilter={resetFilter} reset>
+    <Layout resetFilter={resetFilter} reset done>
       <div style={{ marginBottom: '24px' }}>
         <SelectFilter title='Оберіть регіон' setRegion={setRegionFilter} current={regionState || initialRegionState} />
         <List renderHeader={() => 'Освітні категорії'}>

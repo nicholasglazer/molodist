@@ -26,6 +26,7 @@ export default function Napryamok({ l, unique }) {
     propertyTypeState: init.initialPropertyState,
     regionState: init.initialRegionState
   }
+
   const [showScroll, setShowScroll] = useState(false)
   const [filterState, setFilterState] = useState(fillState);
   const [inputText, setInputText] = useState('');
@@ -37,25 +38,33 @@ export default function Napryamok({ l, unique }) {
     return fillState
   }
 
-  // const countUnique = unique
-  //       .filter(x => filterState.collCheck && x.type === 'college' || filterState.uniCheck && x.type === 'university')
-  //       .filter(v => v.licenses.some(j => filterState.qualificationState.some(k => k.checked && k.label === j.qualification_group_name )))
-  //       .filter(v => filterState.propertyTypeState.some(k => k.checked && k.label === v.financingType))
-  //       .filter(v => filterState.regionState[0] !== 'Всі регіони' ? filterState.regionState[0] === v.region : true)
-  //       .length
+  // FIXME naming problem
+  const { regionState, collCheck, uniCheck, qualificationState, propertyTypeState } = filterState;
+  const isCollege = collCheck;
+  const isUniversity = uniCheck;
+  const qualifications = qualificationState;
+  const propertyTypes = propertyTypeState;
+  const region = regionState;
 
   console.log('unique', unique)
   useEffect(() => {
-    const res = unique.filter(x => x.name.includes(inputText.trim().toLowerCase()));
+    const res = unique.filter(v => v.name.includes(inputText.trim().toLowerCase()))
+                      .filter(v => isCollege && v.type === 'college' || isUniversity && v.type === 'university')
+                      .filter(v => v.licenses.some(j => qualifications.some(k => k.checked && k.label === j.qualification_group_name )))
+                      .filter(v => propertyTypes.some(k => k.checked && k.label === v.financingType))
+                      .filter(v => region[0] !== 'Всі регіони' ? region[0] === v.region : true);
     setFilterDisplay(res)
-  }, [inputText]);
+  }, [inputText, filterState]);
 
   const handleChange = e => {
     setInputText(e);
   }
 
-  const z = inputText.length < 1 ? unique : filterDisplay;
+  //const z = inputText.length < 1 || fillState === filterState ? unique : filterDisplay;
+  //
+  const z = filterDisplay
 
+  console.log('z', z)
   return (
     <Layout filter search>
         {l.map(x => <Title key={x.link}>{x.name}: {x.length}</Title>)}
@@ -74,7 +83,7 @@ export default function Napryamok({ l, unique }) {
           </div>
         </Title>
         <Title>з них спеціальностей:</Title>
-        <DynamicComponent categories={l} unique={z} filterState={filterState}/>
+        <DynamicComponent categories={l} unique={filterDisplay} filterState={filterState}/>
         <ScrollBtn />
       </div>
     </Layout>
