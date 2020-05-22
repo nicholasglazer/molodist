@@ -1,15 +1,15 @@
 import { useState, useEffect, useContext } from 'react'
 import s from '@emotion/styled'
-import FilterContext from '../../context/filter/filterCtx.js'
+import FilterContext from '../../context/filter/filterCtx'
 import Layout, { siteTitle } from '../../components/layout'
 import { getAllDirectionIds, getDirectionData, getSortedDataByDirections } from '../../lib/directions'
-//import UniqueEduList from '../../components/UniqueEduList.js'
 import dynamic from 'next/dynamic'
 import FallbackUEL from '../../components/FallbackUEL'
-import ScrollBtn from '../../components/ScrollBtn.js'
+import ScrollBtn from '../../components/ScrollBtn'
+import SearchFilter from '../../components/SearchFilter'
 
 const DynamicComponent = dynamic(
-  () => import('../../components/UniqueEduList.js'),
+  () => import('../../components/UniqueEduList'),
   {
     loading: () => <FallbackUEL />,
     ssr: false
@@ -28,6 +28,8 @@ export default function Napryamok({ l, unique }) {
   }
   const [showScroll, setShowScroll] = useState(false)
   const [filterState, setFilterState] = useState(fillState);
+  const [inputText, setInputText] = useState('');
+  const [filterDisplay, setFilterDisplay] = useState([]);
   useEffect(() => setFilterState(() => JSON.parse(window.localStorage.getItem('filtersState')) || hydrateFilter()), []);
   // TODO make as helper func
   const hydrateFilter = () => {
@@ -35,32 +37,64 @@ export default function Napryamok({ l, unique }) {
     return fillState
   }
 
-  const countUnique = unique
-        .filter(x => filterState.collCheck && x.type === 'college' || filterState.uniCheck && x.type === 'university')
-        .filter(v => v.licenses.some(j => filterState.qualificationState.some(k => k.checked && k.label === j.qualification_group_name )))
-        .filter(v => filterState.propertyTypeState.some(k => k.checked && k.label === v.financingType))
-        .filter(v => filterState.regionState[0] !== 'Всі регіони' ? filterState.regionState[0] === v.region : true).length
+  // const countUnique = unique
+  //       .filter(x => filterState.collCheck && x.type === 'college' || filterState.uniCheck && x.type === 'university')
+  //       .filter(v => v.licenses.some(j => filterState.qualificationState.some(k => k.checked && k.label === j.qualification_group_name )))
+  //       .filter(v => filterState.propertyTypeState.some(k => k.checked && k.label === v.financingType))
+  //       .filter(v => filterState.regionState[0] !== 'Всі регіони' ? filterState.regionState[0] === v.region : true)
+  //       .length
 
+  console.log('unique', unique)
+  useEffect(() => {
+    const res = unique.filter(x => x.name.includes(inputText.trim().toLowerCase()));
+    setFilterDisplay(res)
+  }, [inputText, filterState]);
+
+  const handleChange = e => {
+    setInputText(e);
+  }
+
+  const z = inputText.length < 1 ? unique : filterDisplay;
 
   return (
     <Layout filter search>
+        <SearchFilter cancel={setInputText}
+                      value={inputText}
+                      placeholder="Пошук по напрямку"
+                      handleChange={handleChange} />
       <div css={{position: 'relative'}}>
+        <Title>
+          {`Навчальних закладiв по напрямку:`}
+          <div style={{fontSize: '14px', color: '#555657', marginLeft: '4px' }}>
+            <ColoredNumber l={z.length} i={unique.length}>
+              {z.length}
+            </ColoredNumber>
+            / {`${unique.length}`}
+          </div>
+        </Title>
         <Title>Спецiальностей:</Title>
         {l.map(x => <Title key={x.link}>{x.name}: {x.length}</Title>)}
-        <Title>{`Навчальних закладiв по цьому напрямку: ${countUnique} / ${unique.length}`}</Title>
-        <DynamicComponent categories={l} unique={unique} filterState={filterState}/>
+        <DynamicComponent categories={l} unique={z} filterState={filterState}/>
         <ScrollBtn />
       </div>
     </Layout>
   )
 }
 
+const ColoredNumber = s.span`
+color: ${({l, i}) => l !== 0 ? (l >= 1 && l < i) ? '#fb9621' : '#555656' : 'tomato' };
+padding-right: 4px;
+`
+
 
 const Title = s.div`
 color: #787979;
 margin-top: 12px;
 text-transform: uppercase;
-font-size: 12px;
+font-size: 13px;
+display: flex;
+justify-content: space-between;
+padding: 0 12px;
 `
 
 
