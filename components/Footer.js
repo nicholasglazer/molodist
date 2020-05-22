@@ -63,7 +63,6 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 padding: 24px 0;
-box-shadow: inset 0px 4px 4px rgba(120, 120, 120, .1);
 `
 const AllRights = s.div`
 padding-left: 0;
