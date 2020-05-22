@@ -1,11 +1,13 @@
 import { SearchBar } from 'antd-mobile';
 import s from '@emotion/styled';
 
-const SearchFilter = ({ value, handleChange, placeholder="Пошук", cancel }) => (
+const SearchFilter = ({ value, handleChange, placeholder="Пошук", cancel }) => {
+ return (
     <SearchWrapper>
       <SearchBar
         placeholder={placeholder}
         value={value}
+        onSubmit={value => console.log('value', value) }
         onChange={handleChange}
         onClear={cancel}
         cancelText="Ок"
@@ -13,6 +15,7 @@ const SearchFilter = ({ value, handleChange, placeholder="Пошук", cancel })
       />
     </SearchWrapper>
 );
+}
 
 const SearchWrapper = s.div`
 display: flex;
