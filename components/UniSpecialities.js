@@ -22,13 +22,13 @@ const SpecialitiesTab = ({ specResults, educatorsCount, hoursCount }) => {
   //     R.compose(R.toUpper(), R.prop('speciality_name'))
   // )
   //TODO make with ramda
-  specResults.map(x => ({...x, speciality_name: x.speciality_name.toUpperCase()}))
+  //specResults.map(x => ({...x, speciality_name: x.speciality_name.toUpperCase()}))
   const sortSpecialitiesByName = toggleSortState ? R.ascend(R.prop(studSortState)) : R.descend(R.prop(studSortState));
   const sorted = R.sort(sortSpecialitiesByName, specResults);
 
   // TODO DRY: make reusable component
   useEffect(() => {
-    const res = sorted.filter(x => x.speciality_name.includes(inputText.trim().toLowerCase()));
+    const res = sorted.filter(x => x.speciality_name.toLowerCase().includes(inputText.trim().toLowerCase()));
     setFilterDisplay(res)
   }, [inputText, toggleSortState, studSortState]);
 

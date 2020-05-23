@@ -8,6 +8,7 @@ import FallbackUEL from '../../components/FallbackUEL'
 import ScrollBtn from '../../components/ScrollBtn'
 import SearchFilter from '../../components/SearchFilter'
 
+// TODO prevent loading 2d time!!!
 const DynamicComponent = dynamic(
   () => import('../../components/UniqueEduList'),
   {
