@@ -25,11 +25,7 @@ export default function Napryamky({ allDirectionsData }) {
   }
   console.log('alldir', allDirectionsData)
   return (
-    <Layout filter search>
-      <SearchFilter cancel={setInputText}
-                    value={inputText}
-                    placeholder="Пошук напрямкiв"
-                    handleChange={handleChange} />
+    <Layout filter search={{ setInputText, inputText, handleChange, placeholder: 'Пошук напрямкiв' }}>
       <List renderHeader={() => 'Шукайте навчальний заклад за напрямками:'}>
         {
           filterDisplay.map(v => {

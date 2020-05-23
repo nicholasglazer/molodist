@@ -6,8 +6,8 @@ import s from '@emotion/styled'
 import { Popover, Icon } from 'antd-mobile'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { MdDone } from 'react-icons/md'
-//import SearchBar from './SearchBar'
-import ResetFilterButton from './ResetFilterButton'
+import ResetFilterButton from 'components/ResetFilterButton'
+import SearchFilter from 'components/SearchFilter'
 
 
 const myImg = src => <img src={`https:gw.alipayobjects.com/zos/rmsportal/${src}.svg`} className="am-icon am-icon-xs" alt="" />;
@@ -17,73 +17,81 @@ const goBack = () => Router.back();
 const name = 'Молодiсть';
 
 const HeaderComponent = ({resetFilter, reset, search, filter, dots, done}) => {
-    return(
-        <HeaderWrapper>
-          <TopHeader>
-            <div>
-              {
-                  done
-                      ? <MdDone onClick={goBack} style={{marginLeft: '10px'}} color="#333" size="26px" />
-                  : <Icon onClick={goBack} color="#888" type="left" size="lg" />
-              }
-            </div>
-            <div>
-              <Title>
-                <Link href='/' >
-                  {name}
+  return(
+    <HeaderWrapper>
+      <TopHeader>
+        <div>
+          {
+            done
+              ? <MdDone onClick={goBack} style={{marginLeft: '10px'}} color="#333" size="26px" />
+            : <Icon onClick={goBack} color="#888" type="left" size="lg" />
+          }
+        </div>
+        <div>
+          <Title>
+            <Link href='/' >
+              {name}
+            </Link>
+          </Title>
+        </div>
+        <div>
+          {
+            filter
+              ? <Link href="/filter">
+                  <BigLink>
+                    Фільтр
+                  </BigLink>
                 </Link>
-              </Title>
-            </div>
-            <div>
-              {
-                  filter
-                      ? <Link href="/filter">
-                          <BigLink>
-                            Фільтр
-                          </BigLink>
-                        </Link>
-                      : null
-              }
-              {
-                  reset ? <ResetFilterButton resetFilter={resetFilter}/> : null
-              }
-              {
-                  dots
-                      ? (<Popover mask
-                  overlayClassName="fortest"
-                  overlayStyle={{ color: '#575759' }}
-                  visible={false}
-                  overlay={[
-                      (<Item key="4" value="scan" icon={myImg('tOtXhkIWzwotgGSeptou')} data-seed="logId">Відсканувати</Item>),
-                      (<Item key="5" value="special" icon={myImg('PKAgAqZWJVNwKsAJSmXd')} style={{ whiteSpace: 'nowrap' }}>QR Код</Item>),
-                      (<Item key="6" value="button ct" icon={myImg('uQIYTFeRrjPELImDRrPt')}>
+              : null
+          }
+          {
+            reset ? <ResetFilterButton resetFilter={resetFilter}/> : null
+          }
+          {
+            dots
+              ? (<Popover mask
+          overlayClassName="fortest"
+          overlayStyle={{ color: '#575759' }}
+          visible={false}
+          overlay={[
+            (<Item key="4" value="scan" icon={myImg('tOtXhkIWzwotgGSeptou')} data-seed="logId">Відсканувати</Item>),
+            (<Item key="5" value="special" icon={myImg('PKAgAqZWJVNwKsAJSmXd')} style={{ whiteSpace: 'nowrap' }}>QR Код</Item>),
+            (<Item key="6" value="button ct" icon={myImg('uQIYTFeRrjPELImDRrPt')}>
                                                                                  <span style={{ marginRight: 5 }}>Допомога</span>
                                                                                </Item>
-                      ),
-                  ]}
-                  align={{
-                      overflow: { adjustY: 0, adjustX: 0 },
-                      offset: [-10, 0],
-                  }}
+            ),
+          ]}
+          align={{
+            overflow: { adjustY: 0, adjustX: 0 },
+            offset: [-10, 0],
+          }}
         >
           <div style={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              paddingRight: '12px'
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            paddingRight: '12px'
           }}
           >
             <BsThreeDotsVertical size="20" color="#666"/>
           </div>
         </Popover>)
-                      : null
-              }
-            </div>
-          </TopHeader>
-          <BottomHeader>
-          </BottomHeader>
-        </HeaderWrapper>
-    );
+              : null
+          }
+        </div>
+      </TopHeader>
+      <BottomHeader>
+        {
+          search ?
+            <SearchFilter cancel={search.setInputText}
+                          value={search.inputText}
+                          placeholder={search.placeholder}
+                          handleChange={search.handleChange} />
+          : null
+        }
+      </BottomHeader>
+    </HeaderWrapper>
+  );
 }
 
 const HeaderWrapper = s.header`

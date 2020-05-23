@@ -62,16 +62,13 @@ export default function Napryamok({ l, unique }) {
 
   //const z = inputText.length < 1 || fillState === filterState ? unique : filterDisplay;
   //
+
   const z = filterDisplay
 
   console.log('z', z)
   return (
-    <Layout filter search>
+    <Layout filter search={{setInputText, inputText, handleChange, placeholder: 'Пошук закладу по напрямку'}}>
         {l.map(x => <Title key={x.link}>{x.name}: {x.length}</Title>)}
-        <SearchFilter cancel={setInputText}
-                      value={inputText}
-                      placeholder="Пошук по напрямку"
-                      handleChange={handleChange} />
       <div css={{position: 'relative'}}>
         <Title>
           {`Навчальних закладiв по напрямку:`}
