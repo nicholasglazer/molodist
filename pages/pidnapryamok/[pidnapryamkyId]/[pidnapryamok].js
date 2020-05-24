@@ -1,23 +1,24 @@
 import { useState, useEffect, useContext } from 'react'
 import s from '@emotion/styled'
-import FilterContext from '../../context/filter/filterCtx'
-import Layout, { siteTitle } from '../../components/layout'
-import { getAllDirectionIds, getDirectionData, getSortedDataByDirections } from '../../lib/directions'
+import FilterContext from 'context/filter/filterCtx'
+import Layout, { siteTitle } from 'components/layout'
+import { getAllSubDirectionIds, getSubDirectionData, getSortedDataByDirections } from 'lib/directions'
 import dynamic from 'next/dynamic'
-import FallbackUEL from '../../components/FallbackUEL'
-import ScrollBtn from '../../components/ScrollBtn'
-import SearchFilter from '../../components/SearchFilter'
+import FallbackUEL from 'components/FallbackUEL'
+import ScrollBtn from 'components/ScrollBtn'
+import SearchFilter from 'components/SearchFilter'
 
 // TODO prevent loading 2d time!!!
 const DynamicComponent = dynamic(
-  () => import('../../components/UniqueEduList'),
+  () => import('components/UniqueEduList'),
   {
     loading: () => <FallbackUEL />,
     ssr: false
   }
 )
 // TODO cache filter results
-export default function Napryamok({ l, unique }) {
+// TODO make animated list on search
+export default function PidNapryamok({ data, unique }) {
 
   const init = useContext(FilterContext);
   const fillState = {
@@ -47,7 +48,7 @@ export default function Napryamok({ l, unique }) {
   const propertyTypes = propertyTypeState;
   const region = regionState;
 
-  console.log('unique', unique)
+  //console.log('unique', unique)
   useEffect(() => {
     const res = unique.filter(v => v.name.includes(inputText.trim().toLowerCase()))
                       .filter(v => isCollege && v.type === 'college' || isUniversity && v.type === 'university')
@@ -64,24 +65,31 @@ export default function Napryamok({ l, unique }) {
   //const z = inputText.length < 1 || fillState === filterState ? unique : filterDisplay;
   //
 
-  const z = filterDisplay
+  //const z = filterDisplay
 
-  console.log('z', z)
+  //console.log('z', z)
+  //
+          //{`Навчальних закладiв по напрямку:`}
   return (
-    <Layout filter search={{setInputText, inputText, handleChange, placeholder: 'Пошук закладу по напрямку'}}>
-        {l.map(x => <Title key={x.link}>{x.name}: {x.length}</Title>)}
+    <Layout filter search={{setInputText, inputText, handleChange, placeholder: 'Пошук закладу по пiднапрямку'}}>
       <div css={{position: 'relative'}}>
+        <Title>{data[0].name}</Title>
         <Title>
-          {`Навчальних закладiв по напрямку:`}
+          <div>
+            <span style={{paddingRight: '4px'}}>
+              #{data[0].id}
+            </span>
+            <span>
+            </span>
+          </div>
           <div style={{fontSize: '14px', color: '#555657', marginLeft: '4px' }}>
-            <ColoredNumber l={z.length} i={unique.length}>
-              {z.length}
+            <ColoredNumber l={filterDisplay.length} i={unique.length}>
+              {filterDisplay.length}
             </ColoredNumber>
             / {`${unique.length}`}
           </div>
         </Title>
-        <Title>з них спеціальностей:</Title>
-        <DynamicComponent categories={l} unique={filterDisplay} filterState={filterState}/>
+        <DynamicComponent categories={null} unique={filterDisplay} filterState={filterState}/>
         <ScrollBtn />
       </div>
     </Layout>
@@ -96,12 +104,13 @@ padding-right: 4px;
 
 const Title = s.div`
 color: #787979;
-margin-top: 12px;
+margin: 12px 0;
 text-transform: uppercase;
 font-size: 13px;
+font-weight: 500;
 display: flex;
 justify-content: space-between;
-padding: 0 12px;
+padding: 0 18px;
 `
 
 
@@ -136,24 +145,27 @@ height: 100%;
 `
 
 export async function getStaticPaths() {
-  const paths = getAllDirectionIds()
+  const paths = getAllSubDirectionIds()
   return {
     paths,
     fallback: false
   }
 }
 export async function getStaticProps({ params }) {
-  const directionData = getDirectionData(params.napryamok)
-  const sortedDirection = getSortedDataByDirections(directionData.directionId)
+  console.log('params.', params.pidnapryamok)
+  const directionData = getSubDirectionData(params.pidnapryamok);
+  const sortedDirection = getSortedDataByDirections(params.pidnapryamkyId);
 
-  const { categories } = sortedDirection.data
-  const unique = sortedDirection.uniqueEdu
-  const l = categories.map(x => ({length: x.licenses.length, name: x.name, link: x.link}))
+  //const { categories } = sortedDirection.data
+  console.log('sortedDirection', sortedDirection)
+  const unique = sortedDirection.uniqueEdu;
+  const data = directionData.subData.filter(x => x.length > 0).flatMap(x => x);
+  //const l = categories.map(x => ({length: x.licenses.length, name: x.name, link: x.link}))
 
   return {
     props: {
-      l,
-      unique
+      unique,
+      data
     }
   }
 }

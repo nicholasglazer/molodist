@@ -25,7 +25,7 @@ const UniqueList = ({categories, unique, filterState}) => (
                               <Card.Body style={{padding: 0}}>
                                 <Accordion accordion>
                                   {
-                                      categories.map((x,i) => {
+                                      categories ? categories.map((x,i) => {
                                           // iterate qualification state over existing qualifications, show not filtered but different colors
                                           // k[x.name] ? k[x.name].filter(n => (n === q.label))[0] ? {color: 'green'} : {color: '#ccc'} : []
                                           return k[x.name] ? (
@@ -59,7 +59,7 @@ const UniqueList = ({categories, unique, filterState}) => (
                                                 </List>
                                               </Accordion.Panel>
                                           ) : null
-                                      })
+                                      }) : null
                                   }
                                 </Accordion>
                               </Card.Body>
