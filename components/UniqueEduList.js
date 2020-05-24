@@ -1,76 +1,55 @@
 import { Icon, Grid, Badge, Card, List, WhiteSpace, Accordion } from 'antd-mobile'
 import { css, jsx } from '@emotion/core'
 import Router from 'next/router'
+import GradeDisplay from 'components/GradeDisplay'
 
 // TODO uniqueedulist refactor
-const UniqueList = ({categories, unique, filterState}) => (
-    <div>
-      {
-          unique
-              .map((v,i) => {
-                  const k = v.directions
-                  return (
-                      <div key={i}>
-                        <div css={{wordBreak: 'break-all', boxShadow: '0px 4px 4px rgba(120, 120, 120, .115)'}}>
+const UniqueList = ({unique, filterState}) => (
+  <div>
+    {
+      unique
+        .map((v,i) => {
+          console.log('v*&&^&', v)
+          const k = v.directions
+          return (
+            <div key={i}>
+              <div css={{wordBreak: 'break-all', boxShadow: '0px 4px 4px rgba(120, 120, 120, .115)'}}>
 
-                          <div>
-                            <WhiteSpace size="lg" />
-                            <Card full>
-                              <Card.Header
-                                style={{wordBreak: 'break-word', fontSize: '15px', color: '#ccc !important'}}
-                                title={`${v.name}`}
-                                thumb="/images/eduBuilding64.png"
-                                onClick={() => {Router.push('/universitet/[universitet]', `/universitet/${v.edrpou}`)}}
-                              />
-                              <Card.Body style={{padding: 0}}>
-                                <Accordion accordion>
-                                  {
-                                      categories ? categories.map((x,i) => {
-                                          // iterate qualification state over existing qualifications, show not filtered but different colors
-                                          // k[x.name] ? k[x.name].filter(n => (n === q.label))[0] ? {color: 'green'} : {color: '#ccc'} : []
-                                          return k[x.name] ? (
-                                              <Accordion.Panel css={{fontSize: '13px !important'}} key={i} header={x.name.toUpperCase()}>
-                                                <List css={{color: '#ccc', fontSize: '13px'}}>
-                                                  {
-                                                      v.licenses.map(y => {
-                                                          // TODO each item should be a link to the edu licenses || contacts
-                                                          let dateExpired = new Date(y.certificate_expired)
-                                                          let dateNow = Date.now()
-                                                          //console.log(k[y.name], k[x.name])
-                                                          return (
-                                                              filterState.qualificationState.map((q,i) => (
-
-                                                                  k[x.name] === k[y.name] && q.label === y.qualification_group_name && q.checked ? (
-                                                                      <List.Item key={i}>
-                                                                        {
-                                                                            <span css={css`display: flex; font-size: 13px; justify-content: space-between;`}>
-                                                                              <div>
-                                                                                {q.short}
-                                                                              </div>
-                                                                              <div css={css`color: ${y.certificate_expired !== null ? dateNow >= dateExpired ? 'indianred' : 'forestgreen' : '#a9a9a9'};`}>
-                                                                                {y.certificate_expired !== null ? dateNow >= dateExpired ? <span>сертифікат <b>{y.certificate}</b> закінчився</span> : <span><b>{y.certificate}</b> дійсний до: </span> :  <span>уточнюйте дані у навчального закладу<b>{y.certificate}</b></span>} <b>{y.certificate_expired}</b>
-                                                                              </div>
-                                                                            </span>
-                                                                        }
-                                                                      </List.Item>) : null
-                                                              ))
-                                                          )})
-                                                  }
-                                                </List>
-                                              </Accordion.Panel>
-                                          ) : null
-                                      }) : null
-                                  }
-                                </Accordion>
-                              </Card.Body>
-                              <Card.Footer style={{fontSize: '13px', margin: '2px 0'}} content={'Лiцензiй по напрямкам:'} extra={<div style={{paddingRight: '4px'}}>{v.countLicenses}</div>} />
-                            </Card>
-                          </div>
-                        </div>
-                      </div>
-                  )
-              })
-      }
-    </div>
+                <div>
+                  <WhiteSpace size="lg" />
+                  <Card full>
+                    <Card.Header
+                      style={{wordBreak: 'break-word', fontSize: '15px', color: '#ccc !important'}}
+                      title={`${v.name}`}
+                      thumb="/images/eduBuilding64.png"
+                      onClick={() => {Router.push('/universitet/[universitet]', `/universitet/${v.edrpou}`)}}
+                    />
+                    <Card.Body style={{padding: 18}}>
+                      <GradeDisplay licenses={v.licenses} filterState={filterState} />
+                    </Card.Body>
+                    <Card.Footer style={{fontSize: '13px', margin: '2px 0'}} content={'Лiцензiй по напрямкам:'} extra={<div style={{paddingRight: '4px'}}>{v.countLicenses}</div>} />
+                  </Card>
+                </div>
+              </div>
+            </div>
+          )
+        })
+    }
+  </div>
 )
 export default UniqueList
+
+                        // <Accordion accordion>
+                        // </Accordion>
+                        // {
+                        //   categories ? categories.map((x,i) => {
+                        //     // iterate qualification state over existing qualifications, show not filtered but different colors
+                        //     // k[x.name] ? k[x.name].filter(n => (n === q.label))[0] ? {color: 'green'} : {color: '#ccc'} : []
+                        //     return k[x.name] ? (
+                        //       <Accordion.Panel css={{fontSize: '13px !important'}} key={i} header={x.name.toUpperCase()}>
+                        //         <List css={{color: '#ccc', fontSize: '13px'}}>
+                        //         </List>
+                        //       </Accordion.Panel>
+                        //     ) : null
+                        //   }) : null
+                        // }

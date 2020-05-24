@@ -3,31 +3,36 @@ const filterData = {
         {
             value: 0,
             checked: true,
-            short: 'Др. філософії',
+            level: 5,
+            short: 'Д',
             label: 'Доктор філософії'
         },
         {
             value: 1,
             checked: true,
-            short: 'Магістр',
+            level: 4,
+            short: 'М',
             label: 'Магістр'
         },
         {
             value: 2,
             checked: true,
-            short: 'Бакалавр',
+            level: 3,
+            short: 'Б',
             label: 'Бакалавр'
         },
         {
             value: 3,
             checked: true,
-            short: 'Спеціаліст',
+            level: 2,
+            short: 'С',
             label: 'Спеціаліст'
         },
         {
             value: 4,
             checked: true,
-            short: 'Мол. спеціаліст',
+            level: 1,
+            short: 'М',
             label: 'Молодший спеціаліст'
         }
     ],

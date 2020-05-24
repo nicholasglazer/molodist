@@ -70,6 +70,7 @@ export default function PidNapryamok({ data, unique }) {
   //console.log('z', z)
   //
           //{`Навчальних закладiв по напрямку:`}
+  console.log('filteerd&**&', filterDisplay )
   return (
     <Layout filter search={{setInputText, inputText, handleChange, placeholder: 'Пошук закладу по пiднапрямку'}}>
       <div css={{position: 'relative'}}>
@@ -152,12 +153,12 @@ export async function getStaticPaths() {
   }
 }
 export async function getStaticProps({ params }) {
-  console.log('params.', params.pidnapryamok)
+  //console.log('params.', params.pidnapryamok)
   const directionData = getSubDirectionData(params.pidnapryamok);
   const sortedDirection = getSortedDataByDirections(params.pidnapryamkyId);
 
   //const { categories } = sortedDirection.data
-  console.log('sortedDirection', sortedDirection)
+  //console.log('sortedDirection', sortedDirection)
   const unique = sortedDirection.uniqueEdu;
   const data = directionData.subData.filter(x => x.length > 0).flatMap(x => x);
   //const l = categories.map(x => ({length: x.licenses.length, name: x.name, link: x.link}))
