@@ -31,8 +31,9 @@ export default function Napryamky({ allDirectionsData }) {
       <Title>Шукайте навчальний заклад за напрямками:</Title>
       {
         filterDisplay.map(v => {
+          console.log('v', v)
           return (
-            <div key={v.category_id}>
+            <TreeWrapper key={v.category_id}>
               <ParentTree>
                 <TreeId onClick={() => {Router.push('/napryamok/[napryamkyId]/[napryamok]', `/napryamok/${v.category_id}/${v.category_link}`)}}>
                   #{v.category_id}
@@ -41,14 +42,14 @@ export default function Napryamky({ allDirectionsData }) {
                   {v.category_name}
                 </TreeName>
               </ParentTree>
-              <ChildTree>
+              <ChildTree color={v.category_color}>
                 {
                   v.categories
                    .map(x =>
                      <ChildTreeWrapper>
-                       <ChildTreeHorDash></ChildTreeHorDash>
-                       <ChildTreeItem>
-                         <TreeId onClick={() => {Router.push('/pidnapryamok/[pidnapryamkyId]/[pidnapryamok]', `/pidnapryamok/${x.id}/${x.link}`)}}>
+                       <ChildTreeHorDash color={v.category_color} />
+                       <ChildTreeItem color={v.category_color} onClick={() => {Router.push('/pidnapryamok/[pidnapryamkyId]/[pidnapryamok]', `/pidnapryamok/${x.id}/${x.link}`)}}>
+                         <TreeId>
                            #{x.id}
                          </TreeId>
                          <TreeName>
@@ -60,16 +61,14 @@ export default function Napryamky({ allDirectionsData }) {
                 }
               </ChildTree>
               <Footer>
-                <Brief>
-                  Всi
-                </Brief>
-                <Brief>{v.categories.length}
+                <div style={{marginLeft: 'auto'}}>
+                  {v.categories.length}
                   {
                     v.categories.length === 1 ? ' напрямок' : v.categories.length >= 5 ? ' напрямків' : ' напрямки'
                   }
-                </Brief>
+                </div>
               </Footer>
-            </div>
+            </TreeWrapper>
           )
         })
       }
@@ -77,6 +76,12 @@ export default function Napryamky({ allDirectionsData }) {
   )
 }
 
+const TreeWrapper = s.div`
+padding: 24px 18px;
+&:nth-child(2n+1) {
+background: ${props => props.background};
+}
+`
 const TreeId = s.span`
 padding-right: 4px;
 color: #0070f3;
@@ -85,16 +90,14 @@ const TreeName = s.span`
 text-transform: uppercase;
 `
 const ParentTree = s.div`
-font-size: 14px;
+font-size: 13px;
+font-weight: 600;
 color: #262928;
-span:first-of-type {
-padding-left: 18px;
-}
+padding: 4px 0;
 `
 const ChildTree = s.div`
 color: #353638;
-margin-left: 22px;
-border-left: 1px dotted #aaa;
+border-left: 4px solid ${props => props.color};
 font-size: 14px;
 display: flex;
 flex-direction: column;
@@ -105,16 +108,23 @@ const ChildTreeWrapper = s.div`
 display: flex;
 `
 const ChildTreeItem = s.div`
+transition: all .36s ease-in-out;
+background: #fffeff;
 flex: 1;
-padding-left: 4px;
+padding: 8px 12px;
+margin-top: 8px;
+box-shadow: 2px 2px 4px rgba(60,60,60, .1);
 span:last-of-type {
 font-size: 12px;
 }
+&:active {
+background: ${props => props.color};
+}
 `
-const ChildTreeHorDash = s.div`
-border-bottom: 1px dotted #aaa;
+const ChildTreeHorDash = s.span`
+border-bottom: 1px dotted ${props => props.color};
 width: 10px;
-height: 11px;
+height: 26px;
 `
 const Title = s.h1`
 font-size: 14px;
@@ -124,7 +134,7 @@ color: #444545;
 
 const Footer = s.div`
 display: flex;
-padding: 18px;
+padding-top: 12px;
 justify-content: space-between;
 `
 
