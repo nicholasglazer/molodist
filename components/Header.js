@@ -16,7 +16,7 @@ const Item = Popover.Item;
 const goBack = () => Router.back();
 const name = 'Молодiсть';
 
-const HeaderComponent = ({resetFilter, reset, search, filter, dots, done}) => {
+const HeaderComponent = ({resetFilter, reset, search, filter, dots, done, title}) => {
   return(
     <HeaderWrapper>
       <TopHeader>
@@ -28,11 +28,15 @@ const HeaderComponent = ({resetFilter, reset, search, filter, dots, done}) => {
           }
         </div>
         <div>
-          <Title>
-            <Link href='/' >
-              {name}
-            </Link>
-          </Title>
+          {
+            !title
+              ? <Title style={{paddingLeft: '24px'}}>
+                  <Link href='/' >
+                    {name}
+                  </Link>
+                </Title>
+            : <Title >{title}</Title>
+          }
         </div>
         <div>
           {
@@ -99,6 +103,7 @@ display: flex;
 flex-direction: column;
 `
 const TopHeader = s.div`
+min-height: 58px;
 display: flex;
 flex: 1;
 padding: 0 12px;
@@ -108,6 +113,9 @@ align-items: center;
  display: flex;
  flex: 1;
  align-items: center;
+ &:nth-of-type(2) {
+ flex: 0 100%;
+ }
  &:last-of-type {
   justify-content: flex-end;
  }
@@ -122,7 +130,8 @@ flex: 1;
 `
 const Title = s.h1`
 font-size: 20px;
-padding-left: 18px;
+margin: 0 auto;
+text-align: center;
 > a {
 color: #344535;
 }

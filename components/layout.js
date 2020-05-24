@@ -9,7 +9,7 @@ import Footer from './Footer'
 
 export const siteTitle = 'Молодість - все про навчання';
 
-export default function Layout({ children, resetFilter, filter, search, dots, reset, done }) {
+export default function Layout({ children, resetFilter, filter, search, dots, reset, done, title }) {
   const theme = useContext(ThemeContext);
   const currentTheme = Theme[theme];
   //TODO meta tags, description, SEO
@@ -36,7 +36,7 @@ export default function Layout({ children, resetFilter, filter, search, dots, re
         />
       </Head>
 
-      <Header resetFilter={resetFilter} filter={filter} search={search} dots={dots} reset={reset} done={done} />
+      <Header resetFilter={resetFilter} filter={filter} search={search} dots={dots} reset={reset} done={done} title={title} />
 
       <main style = {{backgroundColor: `${currentTheme.backgroundColor}`, color: `${currentTheme.textColor}`}}>
         {children}

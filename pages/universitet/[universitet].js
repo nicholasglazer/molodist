@@ -44,8 +44,8 @@ export default function Universitet({ universityData: {data, sortedSpec, specRes
 
   const [tabState, setTabState] = useState(0);
   return (
-    <Layout dots>
-      <UniHead shortName={university_short_name} name={university_name} />
+    <Layout dots title={university_short_name}>
+      <UniHead name={university_name} />
       <WhiteSpace />
       <Tabs
         prerenderingSiblingsNumber={0}

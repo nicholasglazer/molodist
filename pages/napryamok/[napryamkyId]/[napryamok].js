@@ -145,7 +145,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  //const directionData = getDirectionData(params.napryamok)
+  const directionData = getDirectionData(params.napryamok)
   const sortedDirection = getSortedDataByDirections(params.napryamkyId)
 
   const { categories } = sortedDirection.data
