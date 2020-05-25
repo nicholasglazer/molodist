@@ -19,6 +19,7 @@ const SearchFilter = ({ value, handleChange, placeholder="Пошук", cancel })
 
 const SearchWrapper = s.div`
 display: flex;
+box-shadow: 0 1px 3px rgba(0,0,0, .14);
 flex: 1;
 > form {
  width: 100%;

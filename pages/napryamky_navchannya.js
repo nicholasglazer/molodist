@@ -35,7 +35,7 @@ export default function Napryamky({ allDirectionsData }) {
           return (
             <TreeWrapper key={v.category_id}>
               <ParentTree>
-                <TreeId onClick={() => {Router.push('/napryamok/[napryamkyId]/[napryamok]', `/napryamok/${v.category_id}/${v.category_link}`)}}>
+                <TreeId style={{color: v.category_color}} onClick={() => {Router.push('/napryamok/[napryamkyId]/[napryamok]', `/napryamok/${v.category_id}/${v.category_link}`)}}>
                   #{v.category_id}
                 </TreeId>
                 <TreeName>

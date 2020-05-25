@@ -19,6 +19,7 @@ const DynamicComponent = dynamic(
 // TODO cache filter results
 // TODO make animated list on search
 export default function PidNapryamok({ data, unique }) {
+  console.log('data', data)
 
   const init = useContext(FilterContext);
   const fillState = {
@@ -74,14 +75,10 @@ export default function PidNapryamok({ data, unique }) {
   return (
     <Layout filter search={{setInputText, inputText, handleChange, placeholder: 'Пошук закладу по пiднапрямку'}}>
       <div css={{position: 'relative'}}>
-        <Title>{data[0].name}</Title>
+        <Title css={{fontSize: 15}}>{data[0].name}</Title>
         <Title>
-          <div>
-            <span style={{paddingRight: '4px'}}>
-              #{data[0].id}
-            </span>
-            <span>
-            </span>
+          <div style={{paddingRight: '4px'}}>
+            #{data[0].id}
           </div>
           <div style={{fontSize: '14px', color: '#555657', marginLeft: '4px' }}>
             <ColoredNumber l={filterDisplay.length} i={unique.length}>
@@ -104,11 +101,11 @@ padding-right: 4px;
 
 
 const Title = s.div`
-color: #787979;
+color: #686969;
 margin: 12px 0;
 text-transform: uppercase;
 font-size: 13px;
-font-weight: 500;
+font-weight: 600;
 display: flex;
 justify-content: space-between;
 padding: 0 18px;

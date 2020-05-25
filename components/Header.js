@@ -123,7 +123,6 @@ align-items: center;
 `
 const BottomHeader = s.div`
 margin-bottom: 12px;
-border-bottom: 1px solid #ddd;
 display: flex;
 flex-direction: column;
 flex: 1;
