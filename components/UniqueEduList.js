@@ -24,7 +24,7 @@ const UniqueList = ({unique, filterState}) => (
                       thumb="/images/eduBuilding64.png"
                       onClick={() => {Router.push('/universitet/[universitet]', `/universitet/${v.edrpou}`)}}
                     />
-                    <Card.Body style={{padding: 18}}>
+                    <Card.Body style={{padding: 18, overflow: 'auto'}}>
                       <GradeDisplay licenses={v.licenses} filterState={filterState} />
                     </Card.Body>
                     <Card.Footer style={{fontSize: '13px', margin: '2px 0'}} content={'Лiцензiй по напрямкам:'} extra={<div style={{paddingRight: '4px'}}>{v.countLicenses}</div>} />
