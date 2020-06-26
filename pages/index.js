@@ -3,6 +3,8 @@ import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 //import { getSortedPostsData } from '../lib/posts'
 import { getGithubPreviewProps, parseJson } from 'next-tinacms-github'
+import { usePlugin } from 'tinacms'
+import { useGithubToolbarPlugins, useGithubJsonForm } from 'react-tinacms-github'
 //import { GetStaticProps } from 'next'
 //import Button from 'antd-mobile/lib/button';  // for js
 //import 'antd-mobile/lib/button/style/css';        // for css
@@ -12,7 +14,13 @@ import { getGithubPreviewProps, parseJson } from 'next-tinacms-github'
 
         //<p>[Your Self Introduction]</p>
 export default function Home({ file }) {
-  const data = file.data[0]
+  const formOptions = {
+    label: 'Home Page',
+    fields: [{ name: 'title', component: 'text' }],
+  }
+  const [data, form] = useGithubJsonForm(file, formOptions)
+  useGithubToolbarPlugins()
+  usePlugin(form)
   return (
     <Layout>
       <Head>
