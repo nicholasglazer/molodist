@@ -1,16 +1,16 @@
 import { useState, useEffect, useContext } from 'react'
 import s from '@emotion/styled'
-import FilterContext from 'context/filter/filterCtx'
-import Layout, { siteTitle } from 'components/layout'
-import { getAllDirectionIds, getDirectionData, getSortedDataByDirections } from 'lib/directions'
+import FilterContext from '../../../context/filter/filterCtx'
+import Layout, { siteTitle } from '../../../components/layout'
+import { getAllDirectionIds, getDirectionData, getSortedDataByDirections } from '../../../lib/directions'
 import dynamic from 'next/dynamic'
-import FallbackUEL from 'components/FallbackUEL'
-import ScrollBtn from 'components/ScrollBtn'
-import SearchFilter from 'components/SearchFilter'
+import FallbackUEL from '../../../components/FallbackUEL'
+import ScrollBtn from '../../../components/ScrollBtn'
+import SearchFilter from '../../../components/SearchFilter'
 
 // TODO prevent loading 2d time!!!
 const DynamicComponent = dynamic(
-  () => import('components/UniqueEduList'),
+  () => import('../../../components/UniqueEduList'),
   {
     loading: () => <FallbackUEL />,
     ssr: false

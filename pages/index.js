@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
-import { getSortedPostsData } from '../lib/posts'
+//import { getSortedPostsData } from '../lib/posts'
 import { getGithubPreviewProps, parseJson } from 'next-tinacms-github'
-import { GetStaticProps } from 'next'
+//import { GetStaticProps } from 'next'
 //import Button from 'antd-mobile/lib/button';  // for js
 //import 'antd-mobile/lib/button/style/css';        // for css
 //import 'antd-mobile/lib/date-picker/style';         // that will import less
@@ -14,7 +14,7 @@ import { GetStaticProps } from 'next'
 export default function Home({ file }) {
   const data = file.data[0]
   return (
-    <Layout home>
+    <Layout>
       <Head>
         <title>{siteTitle}</title>
       </Head>
@@ -47,10 +47,7 @@ export default function Home({ file }) {
 //     }
 //   }
 // }
-export const getStaticProps: GetStaticProps = async function({
-  preview,
-  previewData,
-}) {
+export const getStaticProps = async function({preview, previewData}) {
   if (preview) {
     return getGithubPreviewProps({
       ...previewData,
