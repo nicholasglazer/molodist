@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import s from '@emotion/styled'
-import Layout, { siteTitle } from 'components/layout'
+import Layout, { siteTitle } from '../components/layout'
 import Link from 'next/link'
 import Router from 'next/router'
-import { getSortedDirectionsData } from 'lib/directions'
+import { getSortedDirectionsData } from '../lib/directions'
 import { List, Icon } from 'antd-mobile'
-import SearchFilter from 'components/SearchFilter'
+import SearchFilter from '../components/SearchFilter'
 const Item = List.Item;
 const Brief = Item.Brief;
 
@@ -78,7 +78,7 @@ export default function Napryamky({ allDirectionsData }) {
 
 const TreeWrapper = s.div`
 padding: 24px 18px;
-&:nth-child(2n+1) {
+&:nth-of-type(2n+1) {
 background: ${props => props.background};
 }
 `

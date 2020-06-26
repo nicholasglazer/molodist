@@ -6,8 +6,8 @@ import s from '@emotion/styled'
 import { Popover, Icon } from 'antd-mobile'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { MdDone } from 'react-icons/md'
-import ResetFilterButton from 'components/ResetFilterButton'
-import SearchFilter from 'components/SearchFilter'
+import ResetFilterButton from './ResetFilterButton'
+import SearchFilter from './SearchFilter'
 
 
 const myImg = src => <img src={`https:gw.alipayobjects.com/zos/rmsportal/${src}.svg`} className="am-icon am-icon-xs" alt="" />;

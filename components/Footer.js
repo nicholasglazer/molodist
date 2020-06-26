@@ -39,16 +39,16 @@ const FooterComponent = () => (
       </Disclaimer>
         <FooterPagesLinks css={insetDeepShadow}>
           <Link href="/support" css={styledLink}>
-            Підтримка
+            <a>Підтримка</a>
           </Link>
           <Link href="/marketing" css={styledLink}>
-            Реклама
+            <a>Реклама</a>
           </Link>
           <Link href="/contacts" css={styledLink}>
-            Контакти
+            <a>Контакти</a>
           </Link>
         </FooterPagesLinks>
-      <AllRights css={insetDeepShadow} className="is-vertical">
+      <AllRights css={insetDeepShadow}>
         <p>
           © {new Date().getFullYear()} <a css={styledLink} href="https://molodist.org">molodist.org</a>
         </p>

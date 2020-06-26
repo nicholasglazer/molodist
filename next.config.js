@@ -1,3 +1,4 @@
+require('dotenv').config()
 const withCSS = require('@zeit/next-css')
 
 module.exports = withCSS({
@@ -23,5 +24,10 @@ module.exports = withCSS({
       })
     }
     return config
+  },
+  env: {
+    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    REPO_FULL_NAME: process.env.REPO_FULL_NAME,
+    BASE_BRANCH: process.env.BASE_BRANCH,
   },
 })

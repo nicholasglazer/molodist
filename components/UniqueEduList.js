@@ -1,7 +1,7 @@
 import { Icon, Grid, Badge, Card, List, WhiteSpace, Accordion } from 'antd-mobile'
 import { css, jsx } from '@emotion/core'
 import Router from 'next/router'
-import GradeDisplay from 'components/GradeDisplay'
+import GradeDisplay from './GradeDisplay'
 
 // TODO uniqueedulist refactor
 const UniqueList = ({unique, filterState}) => (
